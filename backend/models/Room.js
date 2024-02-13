@@ -23,6 +23,10 @@ const roomSchema = new Schema(
         ref: "Message",
       },
     ],
+    createdBy: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
   },
   { timestamps: true }
 );

@@ -33,6 +33,7 @@ const roomService = {
           name: room.name,
           image: room.image,
           members: [user._id],
+          createdBy: user._id,
         });
         await newRoom.save();
         return newRoom;
