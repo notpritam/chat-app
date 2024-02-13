@@ -5,3 +5,5 @@ import verifyToken from "../config/middleware.js";
 const router = express.Router();
 
 router.get("/", verifyToken, roomController.getRooms);
+
+export default router;

@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
 import authRoutes from "./routes/authRoutes.js";
+import roomRoutes from "./routes/roomRoutes.js";
 
 dotenv.config({ path: ".env.local" });
 
@@ -23,5 +24,6 @@ mongoose
   });
 
 app.use("/api/auth", authRoutes);
+app.use("/api/rooms", authRoutes);
 
 export default app;
