@@ -1,5 +1,4 @@
-import mongoose from "mongoose";
-import Room from "../models/Room";
+import Room from "../models/Room.js";
 
 const roomService = {
   getRooms: async ({ user }) => {
@@ -10,8 +9,38 @@ const roomService = {
       return err;
     }
   },
-  joinRoom: async () => {},
-  createRoom: async () => {},
+  joinRoom: async ({ room, user }) => {
+    try {
+      const existingRoom = await Room.findOne({ name: room.name });
+      if (!existingRoom) {
+        return new Error("Room not found");
+      } else {
+        existingRoom.members.push(user._id);
+        await existingRoom.save();
+        return existingRoom;
+      }
+    } catch (err) {
+      return err;
+    }
+  },
+  createRoom: async ({ user, room }) => {
+    try {
+      const existingRoom = await Room.findOne({ name: room.name });
+      if (existingRoom) {
+        return new Error("Room already exists");
+      } else {
+        const newRoom = new Room({
+          name: room.name,
+          image: room.image,
+          members: [user._id],
+        });
+        await newRoom.save();
+        return newRoom;
+      }
+    } catch (err) {
+      return err;
+    }
+  },
 };
 
 export default roomService;
