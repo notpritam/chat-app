@@ -66,7 +66,7 @@ const roomService = {
         existingRoom.messages.push(messageRes._id);
         await existingRoom.save();
 
-        io.to(existingRoom.name).emit("message", message);
+        // io.to(existingRoom.name).emit("message", message);
 
         return existingRoom;
       } else {
