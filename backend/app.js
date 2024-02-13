@@ -24,6 +24,6 @@ mongoose
   });
 
 app.use("/api/auth", authRoutes);
-app.use("/api/rooms", authRoutes);
+app.use("/api/rooms", roomRoutes);
 
 export default app;
