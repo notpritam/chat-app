@@ -24,13 +24,17 @@ const authController = {
     }
   },
   login: async (req, res) => {
-    const { username, password } = req.body;
-    const response = await authService.login({ username, password });
-
-    if (response instanceof Error) {
-      res.status(401).json({ message: response.message });
-    } else {
-      res.status(200).json(response);
+    try {
+      const { username, password } = req.body;
+      console.log(username, password);
+      const response = await authService.login({ username, password });
+      if (response instanceof Error) {
+        res.status(401).json({ message: response.message });
+      } else {
+        res.status(200).json(response);
+      }
+    } catch (err) {
+      res.status(401).json({ message: err });
     }
   },
 };

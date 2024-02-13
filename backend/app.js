@@ -4,11 +4,13 @@ import dotenv from "dotenv";
 import cors from "cors";
 import authRoutes from "./routes/authRoutes.js";
 import roomRoutes from "./routes/roomRoutes.js";
+import morgan from "morgan";
 
 dotenv.config({ path: ".env.local" });
 
 const app = express();
 
+app.use(morgan("dev"));
 app.use(express.json());
 app.use(cors());
 

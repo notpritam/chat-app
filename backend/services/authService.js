@@ -7,6 +7,7 @@ const authService = {
   login: async ({ username, password }) => {
     try {
       const user = await User.findOne({ username });
+      console.log(user);
       if (!user) {
         throw new Error("User not found");
       }

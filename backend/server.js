@@ -1,8 +1,9 @@
 import app from "./app.js";
-import socketIo from "socket.io";
+import { Server } from "socket.io";
+import http from "http";
 
 const server = http.createServer(app);
-export const io = socketIo(server);
+export const io = new Server(server);
 
 io.on("connection", (socket) => {
   console.log("New client connected");
