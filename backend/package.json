@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "a chat app backend for internship",
   "main": "server.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
