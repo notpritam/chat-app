@@ -1,3 +1,4 @@
+import Message from "../models/Message.js";
 import Room from "../models/Room.js";
 import { io } from "../server.js";
 
@@ -5,7 +6,11 @@ const roomService = {
   getRooms: async ({ user }) => {
     try {
       const rooms = await Room.find({ members: user._id });
-      return rooms;
+      if (!rooms) {
+        return new Error("No rooms found");
+      } else {
+        return rooms;
+      }
     } catch (err) {
       return err;
     }
@@ -15,10 +20,12 @@ const roomService = {
       const existingRoom = await Room.findOne({ name: room.name });
       if (!existingRoom) {
         return new Error("Room not found");
-      } else {
+      } else if (!existingRoom.members.includes(user._id)) {
         existingRoom.members.push(user._id);
         await existingRoom.save();
         return existingRoom;
+      } else {
+        return new Error("You are already a member of this room");
       }
     } catch (err) {
       return err;
@@ -49,7 +56,14 @@ const roomService = {
       if (!existingRoom) {
         return new Error("Room not found");
       } else if (existingRoom.members.includes(user._id)) {
-        existingRoom.messages.push(message._id);
+        const newMessage = new Message({
+          content: message.text,
+          sender: user._id,
+          room: existingRoom._id,
+        });
+        const messageRes = await newMessage.save();
+
+        existingRoom.messages.push(messageRes._id);
         await existingRoom.save();
 
         io.to(existingRoom.name).emit("message", message);
