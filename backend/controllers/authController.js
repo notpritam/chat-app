@@ -11,15 +11,28 @@ const authController = {
         name,
       });
 
-      const token = authService.generateToken(user);
+      if (user instanceof Error) {
+        res.status(401).json({ message: user.message });
+      } else {
+        const token = authService.generateToken(user);
 
-      res.status(201).json({ user, token });
+        res.status(201).json({ user, token });
+      }
     } catch (err) {
       console.log(err);
       res.status(401).json({ message: err.message });
     }
   },
-  login: async (req, res) => {},
+  login: async (req, res) => {
+    const { username, password } = req.body;
+    const response = await authService.login({ username, password });
+
+    if (response instanceof Error) {
+      res.status(401).json({ message: response.message });
+    } else {
+      res.status(200).json(response);
+    }
+  },
 };
 
 export default authController;
