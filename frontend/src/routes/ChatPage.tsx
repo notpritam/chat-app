@@ -13,7 +13,9 @@ import { io } from "socket.io-client";
 export interface mesaageType {
   content: string;
   user: User;
+  sender?: User;
   room: string;
+  createdAt: string;
 }
 interface newMessageRes {
   message: mesaageType;
@@ -58,8 +60,6 @@ function ChatPage() {
 
   const [emojiOpen, setEmojiOpen] = useState(false);
 
-  const [currentRoom, setCurrentRoom] = React.useState(id as string);
-
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
   const scrollToBottom = () => {
@@ -73,42 +73,40 @@ function ChatPage() {
     storeGlobalChats(newMessage.message);
   };
 
+  function generateTimestamp() {
+    const date = new Date();
+    const year = date.getUTCFullYear();
+    const month = String(date.getUTCMonth() + 1).padStart(2, "0");
+    const day = String(date.getUTCDate()).padStart(2, "0");
+    const hours = String(date.getUTCHours()).padStart(2, "0");
+    const minutes = String(date.getUTCMinutes()).padStart(2, "0");
+    const seconds = String(date.getUTCSeconds()).padStart(2, "0");
+    const milliseconds = String(date.getUTCMilliseconds()).padStart(3, "0");
+
+    return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${milliseconds}Z`;
+  }
+
   const joinRoom = () => {
     socket.emit("joinRoom", { room: id, user: user });
   };
 
-  const sendMessage = () => {
-    const newMessage: mesaageType = {
-      content: message,
-      user: user as User,
-      room: currentRoom,
-    };
-
-    console.log(currentRoom, "this is current room");
+  const sendMessage = (event: any) => {
+    event?.preventDefault();
 
     socket.emit("sendMessage", {
       room: id,
       message: {
         content: message,
         user: user?._id,
-        room: currentRoom,
+        room: id,
+        createdAt: generateTimestamp(),
       },
       user,
     });
     setMessage("");
   };
 
-  const handleUserJoined = (details: any) => {
-    // console.log(details, "user joined");
-    // setMessages((prevMessages) => [
-    //   ...prevMessages,
-    //   {
-    //     content: details.message,
-    //     user: {} as User,
-    //     room: details.room as string,
-    //   },
-    // ]);
-  };
+  const handleUserJoined = (details: any) => {};
 
   // Listending to socket and handiling that
 
@@ -116,7 +114,6 @@ function ChatPage() {
     console.log("use effect called");
     socket.on("newMessage", handleNewMessage);
     setMessages([]);
-    setCurrentRoom(id as string);
 
     socket.on("connect", () => {
       console.log(socket.id);
@@ -139,8 +136,19 @@ function ChatPage() {
       navigate("/rooms/global");
     });
 
-    socket.on("intialMessage", (messages: initialMessageRes) => {
-      console.log(messages, "initial message");
+    socket.on("intialMessage", (res: initialMessageRes) => {
+      console.log(res, "initial message");
+
+      const formattedMessages = res.messages.map((singleMessage) => {
+        return {
+          content: singleMessage.content,
+          user: singleMessage.sender as User,
+          room: id as string,
+          createdAt: singleMessage.createdAt,
+        };
+      });
+
+      setMessages([...formattedMessages]);
       // setMessages(messages.messages);
       // storeGlobalChats(messages.messages);
     });
@@ -153,14 +161,11 @@ function ChatPage() {
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages]);
+  }, [message, messages]);
 
   return (
-    <div className="flex flex-col h-full w-full justify-between ">
-      <div
-        ref={messagesEndRef}
-        className="flex flex-col h-full bg-blue-500 w-full gap-4 overflow-y-auto overflow-hidden hs  py-4 px-2 "
-      >
+    <div className="flex flex-col h-full w-full justify-end  bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg border border-gray-200  rounded-md shadow-md">
+      <div className="flex flex-col  w-full gap-4 overflow-y-auto overflow-hidden  hs  py-4 px-2 ">
         {messages?.map((message, index) => (
           <ChatMessage
             key={index}
@@ -168,8 +173,9 @@ function ChatPage() {
             message={message}
           />
         ))}
+        <div ref={messagesEndRef} />
       </div>
-      <div className="flex relative w-full gap-2 items-end p-4 pb-2  ">
+      <div className="flex relative w-full gap-2 items-end p-4 pb-2 backdrop-blur-3xl bg-transparent border-t-[1px]  ">
         <EmojiPicker
           className="fixed -top-8 left-0"
           open={emojiOpen}
@@ -180,16 +186,18 @@ function ChatPage() {
         />
         <Smile onClick={() => [setEmojiOpen(!emojiOpen)]} strokeWidth={0.75} />
         <Paperclip strokeWidth={0.75} />
-        <Input
-          placeholder="Type a message"
-          value={message}
-          onChange={(e) => {
-            setMessage(e.target.value);
-          }}
-        />
-        <Button onClick={sendMessage}>
-          <Send />
-        </Button>
+        <form className="flex w-full gap-2">
+          <Input
+            placeholder="Type a message"
+            value={message}
+            onChange={(e) => {
+              setMessage(e.target.value);
+            }}
+          />
+          <Button type="submit" onClick={sendMessage}>
+            <Send />
+          </Button>
+        </form>
       </div>
     </div>
   );

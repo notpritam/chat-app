@@ -37,12 +37,13 @@ io.on("connection", (socket) => {
     const newMessage = details.message;
     const user = details.user;
 
-    if (room == "global") {
+    if (room === "global") {
       io.to("global").emit("newMessage", {
         message: {
           content: newMessage.content,
           user: user,
           room: "global",
+          createdAt: newMessage.createdAt,
         },
       });
     } else {

@@ -71,6 +71,7 @@ const roomService = {
           content: messageRes.content,
           user: user,
           room: "global",
+          createdAt: messageRes.createdAt,
         },
       });
     } catch (err) {
@@ -93,8 +94,13 @@ const roomService = {
     try {
       const existingRoom = await Room.findOne({ name: room })
         .populate("members")
-        .populate("messages");
-
+        .populate({
+          path: "messages",
+          populate: {
+            path: "sender",
+            model: "User", // Assuming "User" is the name of the User model
+          },
+        });
       if (!existingRoom) {
         socket.emit("error", "Room not found");
       }

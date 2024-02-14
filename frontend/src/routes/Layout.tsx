@@ -100,7 +100,8 @@ function Layout() {
       const data = await res.json();
 
       if (res.status === 200) {
-        navigate(`/rooms/${data.room._id}`);
+        console.log(data);
+        navigate(`/rooms/${data.name}`);
         toast({
           title: "Success",
           description: data.message,
