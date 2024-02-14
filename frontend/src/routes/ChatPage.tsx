@@ -32,8 +32,15 @@ interface SelectedRoom {
   image: string;
 }
 
+interface initialMessageRes {
+  messages: mesaageType[];
+  room: string;
+  members: User[];
+}
+
 function ChatPage() {
   const socket = io("http://localhost:3001");
+
   const { token, storeUser, logOut, user, isAnonymous, storeGlobalChats } =
     useUserStore();
   const navigate = useNavigate();
@@ -47,7 +54,7 @@ function ChatPage() {
   const [messages, setMessages] = React.useState<mesaageType[]>([]);
   let { id } = useParams();
 
-  console.log("this is current room", id);
+  // console.log("this is current room", id);
 
   const [emojiOpen, setEmojiOpen] = useState(false);
 
@@ -60,13 +67,14 @@ function ChatPage() {
   };
 
   const handleNewMessage = (newMessage: newMessageRes) => {
-    console.log(newMessage.message);
+    console.log(newMessage, "new message");
+
     setMessages((prevMessages) => [...prevMessages, newMessage.message]);
     storeGlobalChats(newMessage.message);
   };
 
   const joinRoom = () => {
-    socket.emit("joinRoom", { room: currentRoom, user: user });
+    socket.emit("joinRoom", { room: id, user: user });
   };
 
   const sendMessage = () => {
@@ -76,11 +84,10 @@ function ChatPage() {
       room: currentRoom,
     };
 
-    // setMessages((prevMessages) => [...prevMessages, newMessage]);
+    console.log(currentRoom, "this is current room");
 
-    setMessage("");
     socket.emit("sendMessage", {
-      room: currentRoom,
+      room: id,
       message: {
         content: message,
         user: user?._id,
@@ -88,19 +95,19 @@ function ChatPage() {
       },
       user,
     });
+    setMessage("");
   };
 
   const handleUserJoined = (details: any) => {
-    console.log(details, "user joined");
-
-    setMessages((prevMessages) => [
-      ...prevMessages,
-      {
-        content: details.message,
-        user: {} as User,
-        room: details.room as string,
-      },
-    ]);
+    // console.log(details, "user joined");
+    // setMessages((prevMessages) => [
+    //   ...prevMessages,
+    //   {
+    //     content: details.message,
+    //     user: {} as User,
+    //     room: details.room as string,
+    //   },
+    // ]);
   };
 
   // Listending to socket and handiling that
@@ -108,6 +115,8 @@ function ChatPage() {
   useEffect(() => {
     console.log("use effect called");
     socket.on("newMessage", handleNewMessage);
+    setMessages([]);
+    setCurrentRoom(id as string);
 
     socket.on("connect", () => {
       console.log(socket.id);
@@ -116,11 +125,26 @@ function ChatPage() {
     });
     socket.on("userJoined", handleUserJoined);
 
-    // socket.on("joinedRoom", (room: string) => {
-    //   console.log(room, "joined room");
-    // });
+    socket.on("errorMessage", (message: string) => {
+      console.log(message);
+    });
 
-    // Clean up the socket event listener when the component unmounts
+    socket.on("error", (message: string) => {
+      console.log(message);
+      toast({
+        title: "Error",
+        description: message,
+      });
+
+      navigate("/rooms/global");
+    });
+
+    socket.on("intialMessage", (messages: initialMessageRes) => {
+      console.log(messages, "initial message");
+      // setMessages(messages.messages);
+      // storeGlobalChats(messages.messages);
+    });
+
     return () => {
       socket.off("newMessage", handleNewMessage);
       // socket.disconnect();
@@ -137,13 +161,12 @@ function ChatPage() {
         ref={messagesEndRef}
         className="flex flex-col h-full bg-blue-500 w-full gap-4 overflow-y-auto overflow-hidden hs  py-4 px-2 "
       >
-        {messages.map((message, index) => (
-          <>
-            <ChatMessage
-              type={message.user._id === user?._id ? "sent" : "recived"}
-              message={message}
-            />
-          </>
+        {messages?.map((message, index) => (
+          <ChatMessage
+            key={index}
+            type={message.user._id === user?._id ? "sent" : "recived"}
+            message={message}
+          />
         ))}
       </div>
       <div className="flex relative w-full gap-2 items-end p-4 pb-2  ">

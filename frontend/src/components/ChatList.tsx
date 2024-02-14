@@ -45,8 +45,6 @@ function ChatList() {
       const data: any = await res.json();
 
       if (res.status == 200) {
-        console.log(data);
-
         if (data) {
           setJoinedRooms([...data] as any);
         }
@@ -71,18 +69,14 @@ function ChatList() {
         <span className="text-lg font-medium ">All Chats</span>
       </div>
 
-      {joinedRooms?.map((item, index) => {
-        console.log(item, "this is from list");
-        return (
-          <>
-            <ChatListItem
-              name={item.name}
-              members={item.members}
-              image={item.image}
-            />
-          </>
-        );
-      })}
+      {joinedRooms?.map((item, index) => (
+        <ChatListItem
+          key={index}
+          name={item.name}
+          members={item.members}
+          image={item.image}
+        />
+      ))}
 
       {joinedRooms.length == 0 && (
         <>

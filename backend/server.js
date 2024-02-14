@@ -3,6 +3,9 @@ import { Server } from "socket.io";
 import http from "http";
 
 import roomController from "./controllers/roomController.js";
+import roomService from "./services/roomService.js";
+import authService from "./services/authService.js";
+import authController from "./controllers/authController.js";
 
 const server = http.createServer(app);
 export const io = new Server(server, {
@@ -12,18 +15,18 @@ export const io = new Server(server, {
 io.on("connection", (socket) => {
   console.log("New client connected");
 
-  socket.on("joinRoom", (details) => {
+  socket.on("joinRoom", async (details) => {
     const room = details.room;
     const user = details.user;
-    console.log("Client joind here");
-    if (room == "global") {
-      socket.join(details.room);
+
+    if (room === "global") {
+      socket.join(room);
       io.to(room).emit("userJoined", {
         room: room,
         message: `${user.name} has joined the chat.`,
       });
     } else {
-      // logic to verify and add user to database
+      await roomService.joinChatRoom({ room, user, socket });
     }
   });
 
@@ -44,6 +47,16 @@ io.on("connection", (socket) => {
       });
     } else {
       // If Room is not equal to global handle sending message here
+      await roomService.sendMessageinPrivateRoom({
+        room,
+        message: {
+          content: newMessage.content,
+          user: user._id,
+          room: room,
+        },
+        user,
+        socket,
+      });
     }
   });
 

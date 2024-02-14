@@ -51,30 +51,31 @@ const roomService = {
       return err;
     }
   },
-  sendMessageinPrivateRoom: async ({ room, message, user }) => {
+  sendMessageinPrivateRoom: async ({ room, message, user, socket }) => {
+    console.log("sendMessageinPrivateRoom", room, message, user);
     try {
       const existingRoom = await Room.findOne({ name: room });
-      if (!existingRoom) {
-        return new Error("Room not found");
-      } else if (existingRoom.members.includes(user._id)) {
-        const newMessage = new Message({
-          content: message.text,
-          sender: user._id,
-          room: existingRoom._id,
-        });
-        const messageRes = await newMessage.save();
+      const newMessage = new Message({
+        content: message.content,
+        sender: user._id,
+        room: existingRoom._id,
+      });
+      const messageRes = await newMessage.save();
+      console.log("messageRes", messageRes);
 
-        existingRoom.messages.push(messageRes._id);
-        await existingRoom.save();
+      existingRoom.messages.push(messageRes._id);
+      await existingRoom.save();
 
-        io.to(existingRoom.name).emit("message", message);
-
-        return existingRoom;
-      } else {
-        return new Error("You are not a member of this room");
-      }
+      io.to(existingRoom.name).emit("newMessage", {
+        message: {
+          content: messageRes.content,
+          user: user,
+          room: "global",
+        },
+      });
     } catch (err) {
-      return err;
+      socket.emit("error", err.message);
+      console.log(err.message);
     }
   },
   sendMessageinGlobalRoom: async ({ message, user }) => {
@@ -85,6 +86,36 @@ const roomService = {
       // io.to("global").emit("error", {
       //   error: "something went wrong",
       // });
+    }
+  },
+
+  joinChatRoom: async ({ room, user, socket }) => {
+    try {
+      const existingRoom = await Room.findOne({ name: room })
+        .populate("members")
+        .populate("messages");
+
+      if (!existingRoom) {
+        socket.emit("error", "Room not found");
+      }
+
+      const isMember = existingRoom.members.some(
+        (member) => member._id == user._id
+      );
+      console.log("isMember", isMember);
+
+      if (isMember) {
+        socket.join(room);
+        socket.emit("intialMessage", {
+          room: room,
+          messages: existingRoom.messages,
+          members: existingRoom.members,
+        });
+      } else {
+        socket.emit("error", "You are not a member of this room");
+      }
+    } catch (err) {
+      return { error: err.message };
     }
   },
 };

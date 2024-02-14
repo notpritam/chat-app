@@ -5,6 +5,7 @@ import {
   redirect,
   useLocation,
   useNavigate,
+  useParams,
 } from "react-router-dom";
 import useUserStore from "@/lib/store";
 import {
@@ -40,7 +41,7 @@ function Layout() {
   const { user, token, logOut, storeUser, isAnonymous } = useUserStore();
 
   let location = useLocation();
-  console.log(location.pathname);
+  const { id } = useParams();
 
   const [showSidebar, setShowSidebar] = React.useState(false);
 
@@ -222,7 +223,9 @@ function Layout() {
 
       <div className="w-full h-full flex flex-col">
         <div className="h-[80px] p-4 shadow border-b-[1px]">
-          <span className="text-3xl font-medium">Messages</span>
+          <span className="text-3xl font-medium">
+            Messages : {id?.toLocaleUpperCase()}
+          </span>
         </div>
 
         <div className="flex h-full overflow-hidden hs  ">

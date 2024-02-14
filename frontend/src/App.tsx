@@ -13,54 +13,6 @@ import ChatPage from "./routes/ChatPage";
 import Register from "./routes/Register";
 
 function App() {
-  const { token, isAnonymous, storeUser, logOut, user, storeAnonymousUser } =
-    useUserStore();
-
-  const verifyUser = async () => {
-    const res = await fetch("http://localhost:3001/api/auth/verify", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
-    });
-
-    const data = await res.json();
-
-    if (res.status === 200) {
-      console.log(data);
-      storeUser(data.user, token as string);
-      redirect("/home");
-    } else {
-      logOut();
-      toast({
-        title: "Error",
-        description: "Invalid token",
-      });
-    }
-  };
-
-  // User Logged in Anonymusly
-
-  const handleAnonymously = () => {
-    const user = {
-      _id: faker.string.uuid(),
-      username: faker.internet.userName(),
-      image: faker.image.avatar(),
-      name: `${faker.person.firstName()} ${faker.person.lastName()}`,
-    };
-    console.log(user);
-    storeAnonymousUser(user);
-
-    redirect("/room/global");
-  };
-
-  useEffect(() => {
-    if (!isAnonymous && token) {
-      verifyUser();
-    }
-  }, [isAnonymous]);
-
   return (
     <>
       <BrowserRouter>
