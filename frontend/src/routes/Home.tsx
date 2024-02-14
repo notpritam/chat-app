@@ -34,16 +34,29 @@ function Home() {
     });
   };
 
-  useEffect(() => {
-    const handleNewMessage = (newMessage: mesaageType) => {
-      setMessages((prevMessages) => [...prevMessages, newMessage]);
-    };
+  const handleNewMessage = (newMessage: mesaageType) => {
+    setMessages((prevMessages) => [...prevMessages, newMessage]);
+  };
 
+  const joinGlobalRoom = () => {
+    socket.emit("joinRoom", { room: currentRoom });
+  };
+
+  useEffect(() => {
     socket.on("newMessage", handleNewMessage);
+
+    socket.on("connect", () => {
+      console.log(socket.id); // x8WIv7-mJelg7on_ALbx
+    });
+
+    socket.on("joinedRoom", (room: string) => {
+      console.log(room, "joined room");
+    });
 
     // Clean up the socket event listener when the component unmounts
     return () => {
       socket.off("newMessage", handleNewMessage);
+      //   socket.disconnect();
     };
   }, []);
   return (
@@ -52,13 +65,13 @@ function Home() {
         <h1>Chat Page</h1>
 
         <div className="flex justify-between">
-          <Button>Chat Globally</Button>
+          <Button onClick={joinGlobalRoom}>Chat Globally</Button>
           <Button>Join Room</Button>
           <Button>Create Room</Button>
         </div>
       </div>
 
-      <div className="flex flex-col w-full bg-gray-300 h-full py-4 px-2 ">
+      <div className="flex flex-col w-full gap-4 bg-gray-300 h-full py-4 px-2 ">
         {messages.map((message, index) => (
           <>
             <div className="p-4 bg-blue-800 text-sm text-white rounded-full rounded-bl-none max-w-[60%]">
