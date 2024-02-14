@@ -1,14 +1,18 @@
+import ChatMessage from "@/components/chatMessage";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import useUserStore from "@/lib/store";
 import { Send } from "lucide-react";
 import React, { useEffect } from "react";
 
 import io from "socket.io-client";
 
+import logoIcon from "../assets/img/chat.png";
+
 const socket = io("http://localhost:3001");
 
-interface mesaageType {
+export interface mesaageType {
   content: string;
   user: User;
   room: string;
@@ -47,6 +51,13 @@ function Room() {
   };
 
   const sendMessage = () => {
+    const newMessage: mesaageType = {
+      content: message,
+      user: user as User,
+      room: currentRoom,
+    };
+
+    // setMessages((prevMessages) => [...prevMessages, newMessage]);
     socket.emit("sendMessage", {
       room: currentRoom,
       message: {
@@ -78,26 +89,33 @@ function Room() {
   }, []);
 
   return (
-    <div className="min-h-screen">
-      <div className="flex flex-col h-full gap-4">
-        <div className="flex flex-col w-full gap-4 bg-gray-300 h-full py-4 px-2 ">
-          {messages.map((message, index) => (
-            <>
-              <div className="p-4 bg-blue-800 text-sm text-white rounded-full rounded-bl-none max-w-[60%]">
-                <img
-                  className="h-[20px] w-[20px] rounded-full"
-                  src={message.user.image}
-                  alt="message"
-                />{" "}
-                <p>{message.content}</p>
-              </div>
-            </>
-          ))}
-        </div>
+    <div className="min-h-screen relative h-screen flex overflow-hidden max-h-screen">
+      {/* //Header */}
 
-        <div className="flex ">
-          <Input
-            type="text"
+      <div className="p-4 border-r-[1px]">
+        <div className="w-full flex items-center justify-center py-4">
+          <img src={logoIcon} alt="logo" className="h-12 w-12" />
+        </div>
+      </div>
+
+      <div className="w-full flex flex-col">
+        <div className="h-[80px] shadow">
+          <span className="text-3xl font-medium">Messages</span>
+        </div>
+        <div className="flex flex-col justify-between  gap-4">
+          <div className="flex flex-col  w-full gap-4 bg-gray-300  py-4 px-2 ">
+            {messages.map((message, index) => (
+              <>
+                <ChatMessage
+                  type={message.user._id === user?._id ? "sent" : "recived"}
+                  message={message}
+                />
+              </>
+            ))}
+          </div>
+        </div>
+        <div className="flex px-4 pb-4 gap-2 items-end ">
+          <Textarea
             placeholder="Type a message"
             value={message}
             onChange={(e) => {
