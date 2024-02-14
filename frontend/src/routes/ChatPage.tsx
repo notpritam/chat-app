@@ -138,32 +138,32 @@ function ChatPage() {
     }
   }, []);
 
-  const verifyUser = async () => {
-    const res = await fetch("http://localhost:3001/api/auth/verify", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
-    });
+  // const verifyUser = async () => {
+  //   const res = await fetch("http://localhost:3001/api/auth/verify", {
+  //     method: "GET",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Authorization: "Bearer " + token,
+  //     },
+  //   });
 
-    const data = await res.json();
+  //   const data = await res.json();
 
-    if (res.status === 200) {
-      console.log(data);
-      storeUser(data.user, token as string);
-    } else {
-      logOut();
-      toast({
-        title: "Error",
-        description: "Invalid token",
-      });
-    }
-  };
+  //   if (res.status === 200) {
+  //     console.log(data);
+  //     storeUser(data.user, token as string);
+  //   } else {
+  //     logOut();
+  //     toast({
+  //       title: "Error",
+  //       description: "Invalid token",
+  //     });
+  //   }
+  // };
 
-  useEffect(() => {
-    verifyUser();
-  }, [token]);
+  // useEffect(() => {
+  //   verifyUser();
+  // }, [token]);
 
   return (
     <div className="flex flex-col h-full w-full justify-between ">

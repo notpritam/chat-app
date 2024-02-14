@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import ChatListItem from "./chatListItem";
 import { faker } from "@faker-js/faker";
 import useUserStore from "@/lib/store";
+import { Button } from "./ui/button";
 
 interface Rooms {
   name: string;
@@ -17,7 +18,7 @@ interface members {
 }
 
 function ChatList() {
-  const [joinedRooms, setJoinedRooms] = useState();
+  const [joinedRooms, setJoinedRooms] = useState([]);
   const { user, token } = useUserStore();
 
   const getRoomsList = async () => {
@@ -30,10 +31,14 @@ function ChatList() {
         },
       });
 
-      const data = res.json();
+      const data = await res.json();
 
       if (res.status == 200) {
         console.log(data);
+
+        if (data) {
+          setJoinedRooms([]);
+        }
       }
     } catch (e) {
       console.log(e);
@@ -51,11 +56,19 @@ function ChatList() {
         <span className="text-lg font-medium ">All Chats</span>
       </div>
 
-      {Array.from({ length: 20 }).map((item, index) => (
+      {joinedRooms?.map((item, index) => (
         <>
           <ChatListItem name={`room${index}`} image={faker.image.avatar()} />
         </>
       ))}
+
+      {joinedRooms.length == 0 && (
+        <>
+          <div className="p-4">
+            <span>No Rooms Joined</span>
+          </div>
+        </>
+      )}
     </div>
   );
 }
