@@ -13,13 +13,16 @@ import Home from "./routes/Home.tsx";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
-    errorElement: <ErrorPage />,
-  },
-  {
-    path: "/rooms/:id",
     element: <Room />,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        path: "/rooms/:id",
+        element: <App />,
+      },
+    ],
   },
+
   { path: "/login", element: <Login /> },
   { path: "/register", element: <Register /> },
   { path: "/home", element: <Home /> },

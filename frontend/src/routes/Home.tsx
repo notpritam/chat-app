@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input";
 import useUserStore from "@/lib/store";
 import { Send } from "lucide-react";
 import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 import io from "socket.io-client";
 
@@ -29,6 +30,7 @@ interface User {
 function Home() {
   const [message, setMessage] = React.useState("");
   const [messages, setMessages] = React.useState<mesaageType[]>([]);
+  const navigate = useNavigate();
 
   const { user, isAnonymous } = useUserStore();
 
@@ -66,6 +68,7 @@ function Home() {
 
     socket.on("joinedRoom", (room: string) => {
       console.log(room, "joined room");
+      navigate("/rooms/" + room);
     });
 
     // Clean up the socket event listener when the component unmounts

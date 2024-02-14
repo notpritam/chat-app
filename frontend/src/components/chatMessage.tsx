@@ -36,9 +36,9 @@ function ChatMessage({ type, message }: ChatMessageProps) {
           {type == "sent" ? null : (
             <span className=" text-gray-600 truncate">{message.user.name}</span>
           )}
-          <p>{message.content}</p>
+          <p className="text-lg">{message.content}</p>
         </div>
-        <span className="text-[10px]">4:30PM</span>
+        <span className="text-[12px] text-white opacity-35">4:30PM</span>
       </div>
     </div>
   );
