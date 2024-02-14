@@ -4,6 +4,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useToast } from "@/components/ui/use-toast";
 import useUserStore from "@/lib/store";
+import { faker } from "@faker-js/faker";
 
 function Register() {
   const { storeUser } = useUserStore();
@@ -21,8 +22,7 @@ function Register() {
     if (
       loginDetails.username === "" ||
       loginDetails.password === "" ||
-      loginDetails.name === "" ||
-      loginDetails.image === ""
+      loginDetails.name === ""
     ) {
       toast({
         description: "Please fill in all the fields",
@@ -31,20 +31,33 @@ function Register() {
       return;
     }
     try {
-      await axios
-        .post(
-          "http://localhost:3001/api/auth/register",
-          JSON.stringify({
-            username: loginDetails.username,
-            password: loginDetails.password,
-            name: loginDetails.name,
-            image: loginDetails.image,
-          })
-        )
-        .then((res) => {
-          console.log(res.data);
-          storeUser(res.data.user, res.data.token);
+      const res = await fetch("http://localhost:3001/api/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: loginDetails.username,
+          password: loginDetails.password,
+          name: loginDetails.name,
+          image: faker.image.avatar(),
+        }),
+      });
+
+      const data = await res.json();
+      if (res.status === 200) {
+        console.log(data);
+        storeUser(data.user, data.token);
+        toast({
+          description: "Registered successfully",
+          title: "success",
         });
+      } else {
+        toast({
+          description: data.message,
+          title: "Error",
+        });
+      }
     } catch (err) {
       console.log(err);
       toast({

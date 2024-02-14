@@ -6,6 +6,8 @@ const authController = {
   register: async (req, res) => {
     try {
       const { username, password, image, name } = req.body;
+
+      console.log(username, password, image, name);
       const user = await authService.register({
         username,
         password,

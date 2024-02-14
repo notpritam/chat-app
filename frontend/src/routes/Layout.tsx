@@ -110,7 +110,13 @@ function Layout() {
           description: data.message,
         });
       }
-    } catch (error) {}
+    } catch (error: any) {
+      console.log(error);
+      toast({
+        title: "Error",
+        description: error.message,
+      });
+    }
   };
 
   useEffect(() => {
@@ -138,6 +144,7 @@ function Layout() {
 
           <div className="flex flex-col w-full items-center h-full gap-8">
             <div
+              className="cursor-pointer"
               onClick={() => {
                 setShowSidebar(!showSidebar);
                 if (location.pathname != "/rooms/global") {
@@ -153,7 +160,10 @@ function Layout() {
               </div>
             </DialogTrigger>
 
-            <div onClick={() => setShowSidebar(true)}>
+            <div
+              className="cursor-pointer"
+              onClick={() => setShowSidebar(!showSidebar)}
+            >
               <MessageSquareMore strokeWidth={0.75} />
             </div>
           </div>

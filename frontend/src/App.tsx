@@ -10,6 +10,7 @@ import Room from "./routes/Room";
 import Login from "./routes/Login";
 import ErrorPage from "./error-page";
 import ChatPage from "./routes/ChatPage";
+import Register from "./routes/Register";
 
 function App() {
   const { token, isAnonymous, storeUser, logOut, user, storeAnonymousUser } =
@@ -67,6 +68,7 @@ function App() {
           <Route path="/" element={<Layout />}>
             <Route index path="/rooms/:id" element={<ChatPage />} />
             <Route path="login" element={<Login />} />
+            <Route path="register" element={<Register />} />
             <Route path="*" element={<ErrorPage />} />
           </Route>
         </Routes>

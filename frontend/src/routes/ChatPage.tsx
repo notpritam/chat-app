@@ -106,6 +106,7 @@ function ChatPage() {
   // Listending to socket and handiling that
 
   useEffect(() => {
+    console.log("use effect called");
     socket.on("newMessage", handleNewMessage);
 
     socket.on("connect", () => {
@@ -122,9 +123,9 @@ function ChatPage() {
     // Clean up the socket event listener when the component unmounts
     return () => {
       socket.off("newMessage", handleNewMessage);
-      //   socket.disconnect();
+      // socket.disconnect();
     };
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     scrollToBottom();
