@@ -10,14 +10,14 @@ const roomSchema = new Schema(
       type: String,
       required: true,
     },
-    security: {
-      type: String,
-      enum: ["public", "private"],
-      default: "public",
-    },
-    password: {
-      type: String,
-    },
+    // security: {
+    //   type: String,
+    //   enum: ["public", "private"],
+    //   default: "public",
+    // },
+    // password: {
+    //   type: String,
+    // },
     members: [
       {
         type: Schema.Types.ObjectId,

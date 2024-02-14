@@ -1,3 +1,4 @@
+import { mesaageType } from "@/routes/ChatPage";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
@@ -5,6 +6,8 @@ interface UserState {
   token: string | null;
   user: UserType | null;
   isAnonymous: boolean;
+  globalChats: mesaageType[];
+  storeGlobalChats: (chat: mesaageType) => void;
   logOut: () => void;
   storeAnonymousUser: (user: UserType) => void;
   storeUser: (user: UserType, token: string) => void;
@@ -23,6 +26,7 @@ const useUserStore = create<UserState>()(
       user: null,
       token: null,
       isAnonymous: true,
+      globalChats: [],
       logOut: () => {
         set((state) => {
           return {
@@ -30,6 +34,14 @@ const useUserStore = create<UserState>()(
             user: null,
             isAnonymous: false,
             token: null,
+          };
+        });
+      },
+      storeGlobalChats: (chat: mesaageType) => {
+        set((state) => {
+          return {
+            ...state,
+            globalChats: [...state.globalChats, chat],
           };
         });
       },
@@ -49,7 +61,6 @@ const useUserStore = create<UserState>()(
         });
       },
       storeUser: (user, token) => {
-        console.log(user, "getting this here");
         set((state) => {
           return {
             ...state,

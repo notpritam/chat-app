@@ -32,10 +32,10 @@ interface SelectedRoom {
   image: string;
 }
 
-const socket = io("http://localhost:3001");
-
 function ChatPage() {
-  const { token, storeUser, logOut, user, isAnonymous } = useUserStore();
+  const socket = io("http://localhost:3001");
+  const { token, storeUser, logOut, user, isAnonymous, storeGlobalChats } =
+    useUserStore();
   const navigate = useNavigate();
 
   if (user == null) {
@@ -46,6 +46,8 @@ function ChatPage() {
   const [message, setMessage] = React.useState("");
   const [messages, setMessages] = React.useState<mesaageType[]>([]);
   let { id } = useParams();
+
+  console.log("this is current room", id);
 
   const [emojiOpen, setEmojiOpen] = useState(false);
 
@@ -60,6 +62,7 @@ function ChatPage() {
   const handleNewMessage = (newMessage: newMessageRes) => {
     console.log(newMessage.message);
     setMessages((prevMessages) => [...prevMessages, newMessage.message]);
+    storeGlobalChats(newMessage.message);
   };
 
   const joinRoom = () => {
@@ -108,7 +111,7 @@ function ChatPage() {
     socket.on("connect", () => {
       console.log(socket.id);
       joinRoom();
-      scrollToBottom();
+      // scrollToBottom();
     });
     socket.on("userJoined", handleUserJoined);
 

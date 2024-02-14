@@ -77,7 +77,7 @@ function ChatList() {
             {isAnonymous && (
               <div className="p-4">
                 <span>
-                  No Private Rooms or Anonymous User. Create an account first.
+                  No Private Rooms for Anonymous User. Create an account first.
                 </span>
               </div>
             )}
