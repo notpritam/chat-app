@@ -30,7 +30,7 @@ function Home() {
   const [message, setMessage] = React.useState("");
   const [messages, setMessages] = React.useState<mesaageType[]>([]);
 
-  const { username, _id, name, image } = useUserStore();
+  const { user, isAnonymous } = useUserStore();
 
   const [currentRoom, setCurrentRoom] = React.useState("global");
 
@@ -41,15 +41,10 @@ function Home() {
       room: currentRoom,
       message: {
         content: message,
-        user: _id,
+        user: user?._id,
         room: currentRoom,
       },
-      user: {
-        username,
-        _id,
-        name,
-        image,
-      },
+      user,
     });
   };
 

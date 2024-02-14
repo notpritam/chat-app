@@ -4,9 +4,10 @@ import useUserStore from "./lib/store";
 import { toast } from "./components/ui/use-toast";
 import { Button } from "./components/ui/button";
 import { Link, redirect } from "react-router-dom";
+import { faker } from "@faker-js/faker";
 
 function App() {
-  const { token, isAnonymous, storeUser, logOut, username, name } =
+  const { token, isAnonymous, storeUser, logOut, user, storeAnonymousUser } =
     useUserStore();
 
   const verifyUser = async () => {
@@ -22,7 +23,7 @@ function App() {
 
     if (res.status === 200) {
       console.log(data);
-      storeUser(data.user, token);
+      storeUser(data.user, token as string);
       redirect("/home");
     } else {
       logOut();
@@ -31,6 +32,21 @@ function App() {
         description: "Invalid token",
       });
     }
+  };
+
+  // User Logged in Anonymusly
+
+  const handleAnonymously = () => {
+    const user = {
+      _id: faker.string.uuid(),
+      username: faker.internet.userName(),
+      image: faker.image.avatar(),
+      name: `${faker.person.firstName()} ${faker.person.lastName()}`,
+    };
+    console.log(user);
+    storeAnonymousUser(user);
+
+    redirect("/room/global");
   };
 
   useEffect(() => {
@@ -42,7 +58,7 @@ function App() {
   return (
     <>
       <div>App</div>
-      <p>{username + " " + name}</p>
+      <p>{user?.username + " " + user?.name}</p>
 
       <div className="flex flex-col">
         <Link to={"/login"}>
@@ -50,8 +66,9 @@ function App() {
           <Button>Login</Button>
         </Link>
         <Link to={"/register"}>
-          <Button>Chat Anonymously</Button>
+          <Button>Create an Account</Button>
         </Link>
+        <Button onClick={handleAnonymously}>Chat Anonymously</Button>
       </div>
     </>
   );

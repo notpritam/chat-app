@@ -30,14 +30,14 @@ io.on("connection", (socket) => {
 
     if (room == "global") {
       io.to("global").emit("newMessage", {
-        newMessage,
-        user,
+        message: {
+          content: newMessage.content,
+          user: user,
+          room: "global",
+        },
       });
     } else {
-      io.to(room).emit("newMessage", {
-        message,
-        user,
-      });
+      // If Room is not equal to global handle sending message here
     }
   });
 
