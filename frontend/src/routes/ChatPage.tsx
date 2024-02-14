@@ -7,7 +7,7 @@ import useUserStore from "@/lib/store";
 import EmojiPicker from "emoji-picker-react";
 import { Paperclip, Send, Smile } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { io } from "socket.io-client";
 
 export interface mesaageType {
@@ -37,16 +37,13 @@ const socket = io("http://localhost:3001");
 function ChatPage() {
   const [message, setMessage] = React.useState("");
   const [messages, setMessages] = React.useState<mesaageType[]>([]);
+  let { id } = useParams();
 
   const [emojiOpen, setEmojiOpen] = useState(false);
   const { user, isAnonymous } = useUserStore();
   const navigate = useNavigate();
 
-  const [currentRoom, setCurrentRoom] = React.useState(
-    window.location.pathname.split("/rooms/")[1] == "global"
-      ? "global"
-      : window.location.pathname.split("/rooms/")[1]
-  );
+  const [currentRoom, setCurrentRoom] = React.useState(id as string);
 
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 

@@ -4,6 +4,7 @@ const roomController = {
   getRooms: async (req, res) => {
     try {
       console.log(req.user);
+      console.log("getting here");
       const rooms = await roomService.getRooms();
       res.status(200).json(rooms);
     } catch (err) {

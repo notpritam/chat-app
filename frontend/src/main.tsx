@@ -9,6 +9,7 @@ import Login from "./routes/Login.tsx";
 import { Toaster } from "@/components/ui/toaster";
 import Register from "./routes/Register.tsx";
 import Home from "./routes/Home.tsx";
+import ChatPage from "./routes/ChatPage.tsx";
 
 const router = createBrowserRouter([
   {
@@ -18,7 +19,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/rooms/:id",
-        element: <App />,
+        element: <ChatPage />,
       },
     ],
   },

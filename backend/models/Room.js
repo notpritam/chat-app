@@ -1,5 +1,4 @@
 import mongoose, { Schema } from "mongoose";
-
 const roomSchema = new Schema(
   {
     name: {
@@ -10,6 +9,14 @@ const roomSchema = new Schema(
     image: {
       type: String,
       required: true,
+    },
+    security: {
+      type: String,
+      enum: ["public", "private"],
+      default: "public",
+    },
+    password: {
+      type: String,
     },
     members: [
       {
