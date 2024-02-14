@@ -34,6 +34,7 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { faker } from "@faker-js/faker";
 
 function Layout() {
   const { user, token, logOut, storeUser, isAnonymous } = useUserStore();
@@ -70,6 +71,46 @@ function Layout() {
         description: "Invalid token",
       });
     }
+  };
+
+  const createorJoinRooms = async () => {
+    try {
+      const res = await fetch(
+        `http://localhost:3001/api/rooms/${createRoom ? "create" : "join"}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+          body: JSON.stringify({
+            room: {
+              name: roomValue,
+              image: faker.image.urlLoremFlickr({
+                category: roomValue.replace(/\d/g, ""),
+                width: 200,
+                height: 200,
+              }),
+            },
+          }),
+        }
+      );
+
+      const data = await res.json();
+
+      if (res.status === 200) {
+        navigate(`/rooms/${data.room._id}`);
+        toast({
+          title: "Success",
+          description: data.message,
+        });
+      } else {
+        toast({
+          title: "Error",
+          description: data.message,
+        });
+      }
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -161,7 +202,9 @@ function Layout() {
                 <Label>Create Room</Label>
               </div>
 
-              <Button>{createRoom ? "Create Room" : "Join Room"}</Button>
+              <Button onClick={createorJoinRooms}>
+                {createRoom ? "Create Room" : "Join Room"}
+              </Button>
             </>
           )}
         </DialogContent>

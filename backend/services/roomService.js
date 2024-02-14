@@ -44,6 +44,7 @@ const roomService = {
           createdBy: user._id,
         });
         await newRoom.save();
+
         return newRoom;
       }
     } catch (err) {

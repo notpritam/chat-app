@@ -24,7 +24,23 @@ const roomController = {
       res.status(500).json({ message: err.message });
     }
   },
-  createRoom: async (req, res) => {},
+  createRoom: async (req, res) => {
+    try {
+      const { user } = req;
+      const room = req.body.room;
+      console.log(req, "this is room and user");
+
+      console.log(room, user, "this is room and user");
+      const result = await roomService.createRoom({
+        room,
+        user,
+      });
+      console.log(result, "this is result");
+      res.status(200).json(result);
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  },
 
   sendMessageinRoom: async ({ room, message, user }) => {
     try {
