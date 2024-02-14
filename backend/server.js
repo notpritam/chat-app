@@ -2,6 +2,8 @@ import app from "./app.js";
 import { Server } from "socket.io";
 import http from "http";
 
+import roomController from "./controllers/roomController.js";
+
 const server = http.createServer(app);
 export const io = new Server(server, {
   cors: { origin: "http://localhost:5173" },
@@ -12,12 +14,31 @@ io.on("connection", (socket) => {
 
   socket.on("joinRoom", (details) => {
     console.log(details.room);
-    socket.join(details.room);
+    if (details.room == "global") {
+      socket.join(details.room);
+    } else {
+      // logic to verify and add user to database
+    }
   });
 
-  socket.on("sendMessage", (message) => {
-    console.log(message);
-    io.to(message.room).emit("newMessage", message);
+  socket.on("sendMessage", async (details) => {
+    console.log(details);
+
+    const room = details.room;
+    const newMessage = details.message;
+    const user = details.user;
+
+    if (room == "global") {
+      io.to("global").emit("newMessage", {
+        newMessage,
+        user,
+      });
+    } else {
+      io.to(room).emit("newMessage", {
+        message,
+        user,
+      });
+    }
   });
 
   // Handle socket events here

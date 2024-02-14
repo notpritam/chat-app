@@ -1,11 +1,12 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-interface BearState {
+interface UserState {
   token: string;
   username: string;
   image: string;
   name: string;
+  _id: string;
   isAnonymous: boolean;
   logOut: () => void;
   storeUser: (user: UserType, token: string) => void;
@@ -18,7 +19,7 @@ type UserType = {
   _id: string;
 };
 
-const useUserStore = create<BearState>()(
+const useUserStore = create<UserState>()(
   persist(
     (set) => ({
       username: "",

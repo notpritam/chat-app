@@ -14,11 +14,23 @@ interface mesaageType {
   room: string;
 }
 
+interface newMessageRes {
+  message: mesaageType;
+  user: User;
+}
+
+interface User {
+  username: string;
+  _id: string;
+  name: string;
+  image: string;
+}
+
 function Home() {
   const [message, setMessage] = React.useState("");
   const [messages, setMessages] = React.useState<mesaageType[]>([]);
 
-  const { username, _id } = useUserStore();
+  const { username, _id, name, image } = useUserStore();
 
   const [currentRoom, setCurrentRoom] = React.useState("global");
 
@@ -30,12 +42,20 @@ function Home() {
       message: {
         content: message,
         user: _id,
+        room: currentRoom,
+      },
+      user: {
+        username,
+        _id,
+        name,
+        image,
       },
     });
   };
 
-  const handleNewMessage = (newMessage: mesaageType) => {
-    setMessages((prevMessages) => [...prevMessages, newMessage]);
+  const handleNewMessage = (newMessage: newMessageRes) => {
+    console.log(newMessage.message);
+    setMessages((prevMessages) => [...prevMessages, newMessage.message]);
   };
 
   const joinGlobalRoom = () => {

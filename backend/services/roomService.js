@@ -50,9 +50,9 @@ const roomService = {
       return err;
     }
   },
-  sendMessageinRoom: async ({ room, message, user }) => {
+  sendMessageinPrivateRoom: async ({ room, message, user }) => {
     try {
-      const existingRoom = await Room.findOne({ name: room.name });
+      const existingRoom = await Room.findOne({ name: room });
       if (!existingRoom) {
         return new Error("Room not found");
       } else if (existingRoom.members.includes(user._id)) {
@@ -66,7 +66,7 @@ const roomService = {
         existingRoom.messages.push(messageRes._id);
         await existingRoom.save();
 
-        // io.to(existingRoom.name).emit("message", message);
+        io.to(existingRoom.name).emit("message", message);
 
         return existingRoom;
       } else {
@@ -74,6 +74,16 @@ const roomService = {
       }
     } catch (err) {
       return err;
+    }
+  },
+  sendMessageinGlobalRoom: async ({ message, user }) => {
+    try {
+      console.log(message, "this is new message in global route");
+      io.to("global").emit("newMessage", message, user);
+    } catch (e) {
+      // io.to("global").emit("error", {
+      //   error: "something went wrong",
+      // });
     }
   },
 };

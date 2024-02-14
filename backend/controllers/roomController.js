@@ -1,3 +1,4 @@
+import authService from "../services/authService.js";
 import roomService from "../services/roomService.js";
 const roomController = {
   getRooms: async (req, res) => {
@@ -23,6 +24,23 @@ const roomController = {
     }
   },
   createRoom: async (req, res) => {},
+
+  sendMessageinRoom: async ({ room, message, user }) => {
+    try {
+      if (room == "global") {
+        const res = await roomService.sendMessageinGlobalRoom({
+          message,
+          user,
+        });
+      } else {
+        const res = await roomService.sendMessageinPrivateRoom({
+          room,
+          user,
+          message,
+        });
+      }
+    } catch (e) {}
+  },
 };
 
 export default roomController;
