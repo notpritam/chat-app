@@ -1,34 +1,58 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
+import { useEffect, useState } from "react";
 import "./App.css";
+import useUserStore from "./lib/store";
+import { toast } from "./components/ui/use-toast";
 import { Button } from "./components/ui/button";
+import { Link, redirect } from "react-router-dom";
 
 function App() {
-  const [count, setCount] = useState(0);
+  const { token, isAnonymous, storeUser, logOut, username, name } =
+    useUserStore();
+
+  const verifyUser = async () => {
+    const res = await fetch("http://localhost:3001/api/auth/verify", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    });
+
+    const data = await res.json();
+
+    if (res.status === 200) {
+      console.log(data);
+      storeUser(data.user, token);
+      redirect("/home");
+    } else {
+      logOut();
+      toast({
+        title: "Error",
+        description: "Invalid token",
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (!isAnonymous) {
+      verifyUser();
+    }
+  }, [isAnonymous]);
 
   return (
     <>
-      <div className="bg-black">
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <div>App</div>
+      <p>{username + " " + name}</p>
+
+      <div className="flex flex-col">
+        <Link to={"/login"}>
+          {" "}
+          <Button>Login</Button>
+        </Link>
+        <Link to={"/register"}>
+          <Button>Chat Anonymously</Button>
+        </Link>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <Button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </Button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   );
 }

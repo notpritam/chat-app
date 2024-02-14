@@ -46,7 +46,7 @@ const authService = {
     }
   },
   generateToken: (user) => {
-    return jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+    return jwt.sign({ user: user }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
   },

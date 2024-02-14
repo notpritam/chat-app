@@ -1,5 +1,7 @@
 import authService from "../services/authService.js";
 
+import jwt from "jsonwebtoken";
+
 const authController = {
   register: async (req, res) => {
     try {
@@ -35,6 +37,32 @@ const authController = {
       }
     } catch (err) {
       res.status(401).json({ message: err });
+    }
+  },
+
+  verifyUser: async (req, res) => {
+    try {
+      const token = req.headers.authorization.split(" ")[1];
+
+      console.log(token);
+
+      if (!token) {
+        return res.status(401).json({ message: "No token provided" });
+      }
+
+      jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+        if (err) {
+          throw new Error("Failed to authenticate token");
+        }
+        req.user = decoded.user;
+      });
+
+      res.status(200).json({
+        message: "Token verified",
+        user: req.user,
+      });
+    } catch (err) {
+      res.status(401).json({ message: err.message });
     }
   },
 };

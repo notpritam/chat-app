@@ -2,13 +2,13 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 interface BearState {
-  bears: number;
   token: string;
   username: string;
   image: string;
   name: string;
+  isAnonymous: boolean;
+  logOut: () => void;
   storeUser: (user: UserType, token: string) => void;
-  increase: (by: number) => void;
 }
 
 type UserType = {
@@ -26,8 +26,22 @@ const useUserStore = create<BearState>()(
       image: "",
       name: "",
       _id: "",
-      bears: 0,
+      isAnonymous: true,
+      logOut: () => {
+        set((state) => {
+          return {
+            ...state,
+            username: "",
+            image: "",
+            name: "",
+            token: "",
+            isAnonymous: true,
+            _id: "",
+          };
+        });
+      },
       storeUser: (user, token) => {
+        console.log(user, "getting this here");
         set((state) => {
           return {
             ...state,
@@ -35,11 +49,11 @@ const useUserStore = create<BearState>()(
             image: user.image,
             name: user.name,
             token: token,
+            isAnonymous: false,
             _id: user._id,
           };
         });
       },
-      increase: (by) => set((state) => ({ bears: state.bears + by })),
     }),
     { name: "user-storage" }
   )
