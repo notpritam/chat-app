@@ -3,16 +3,21 @@ import { Server } from "socket.io";
 import http from "http";
 
 const server = http.createServer(app);
-export const io = new Server(server);
+export const io = new Server(server, {
+  cors: { origin: "http://localhost:5173" },
+});
 
 io.on("connection", (socket) => {
   console.log("New client connected");
 
   // Handle socket events here
+  socket.on("disconnect", () => {
+    console.log("Client disconnected");
+  });
 });
 
 const PORT = process.env.PORT || 3001;
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
