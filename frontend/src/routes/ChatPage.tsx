@@ -164,8 +164,15 @@ function ChatPage() {
   }, [message, messages]);
 
   return (
-    <div className="flex flex-col h-full w-full justify-end  bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg border border-gray-200  rounded-md shadow-md">
-      <div className="flex flex-col  w-full gap-4 overflow-y-auto overflow-hidden  hs  py-4 px-2 ">
+    <div className="flex flex-col h-full w-full justify-end relative   bg-white bg-opacity-10 backdrop-filter backdrop-blur-3xl border border-gray-200  rounded-md shadow-md">
+      <div
+        className="absolute bg-cover bg-center z-[0] h-full w-full top-0 left-0 right-0 bottom-0"
+        style={{
+          backgroundImage:
+            "url(https://4kwallpapers.com/images/walls/thumbs_3t/6420.jpg)",
+        }}
+      ></div>
+      <div className="flex flex-col z-10  w-full gap-4 overflow-y-auto overflow-hidden  hs  py-4 px-2 ">
         {messages?.map((message, index) => (
           <ChatMessage
             key={index}
@@ -184,9 +191,13 @@ function ChatPage() {
             setMessage((message) => message + e.emoji);
           }}
         />
-        <Smile onClick={() => [setEmojiOpen(!emojiOpen)]} strokeWidth={0.75} />
-        <Paperclip strokeWidth={0.75} />
-        <form className="flex w-full gap-2">
+        <Smile
+          className="text-white"
+          onClick={() => [setEmojiOpen(!emojiOpen)]}
+          strokeWidth={0.75}
+        />
+        <Paperclip className="text-white" strokeWidth={0.75} />
+        <form className="flex w-full gap-2 text-white">
           <Input
             placeholder="Type a message"
             value={message}
@@ -194,8 +205,12 @@ function ChatPage() {
               setMessage(e.target.value);
             }}
           />
-          <Button type="submit" onClick={sendMessage}>
-            <Send />
+          <Button
+            type="submit"
+            className="bg-transparent"
+            onClick={sendMessage}
+          >
+            <Send className="text-white" />
           </Button>
         </form>
       </div>

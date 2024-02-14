@@ -14,20 +14,14 @@ function ChatMessage({ type, message }: ChatMessageProps) {
       return;
     }
 
-    // Convert timestamp to Date object
     const date = new Date(timestamp);
 
-    // Format the date to normal time format
     const formattedTime = new Intl.DateTimeFormat("en-US", {
       hour12: true,
       hour: "numeric",
       minute: "numeric",
       second: "numeric",
     }).format(date);
-
-    console.log("Formatted time:", formattedTime);
-
-    // Get current time in the same format
 
     return formattedTime;
   };
@@ -54,18 +48,16 @@ function ChatMessage({ type, message }: ChatMessageProps) {
       >
         <div
           className={cn(
-            "px-4 py-2 text-sm rounded-3xl items-start shadow text-white flex flex-col  gap-2 w-auto max-w-[60%]",
-            type === "sent"
-              ? "rounded-br-none bg-blue-600 "
-              : "rounded-bl-none bg-green-500 "
+            "px-4 py-2 text-sm rounded-3xl items-start shadow-md border-opacity-10 bg-white text-white flex flex-col  gap-2 w-auto max-w-[60%] bg-opacity-10 backdrop-filter backdrop-blur-3xl border border-gray-200 ",
+            type === "sent" ? "rounded-br-none  " : "rounded-bl-none "
           )}
         >
           {type == "sent" ? null : (
-            <span className=" text-gray-600 truncate">{message.user.name}</span>
+            <span className=" text-gray-200 truncate">{message.user.name}</span>
           )}
           <p className="text-lg">{message.content}</p>
         </div>
-        <span className="text-[12px] text-gray-600 opacity-35">
+        <span className="text-[12px] text-white opacity-55">
           {formattedTime(message.createdAt)}
         </span>
       </div>

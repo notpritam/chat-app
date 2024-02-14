@@ -139,9 +139,13 @@ function Layout() {
     <div className="min-h-screen relative h-screen flex overflow-hidden max-h-screen">
       {/* //SideBar */}
       <Dialog>
-        <div className="p-4 pb-12 pt-0 border-r-[1px] flex flex-col gap-12">
+        <div className="md:p-4 md:pb-12 p-2 pt-0 border-r-[1px]  flex flex-col gap-12">
           <div className="w-full flex items-center justify-center py-4">
-            <img src={logoIcon} alt="logo" className="h-12 w-12" />
+            <img
+              src={logoIcon}
+              alt="logo"
+              className="h-8 w-8  md:h-12 md:w-12"
+            />
           </div>
 
           <div className="flex flex-col w-full items-center h-full gap-8">
@@ -223,8 +227,8 @@ function Layout() {
       </Dialog>
 
       <div className="w-full h-full flex flex-col">
-        <div className="h-[80px] p-4 shadow border-b-[1px]">
-          <span className="text-3xl font-medium">
+        <div className="md:h-[80px] md:flex hidden p-2 md:p-4 shadow border-b-[1px]">
+          <span className="md:text-3xl font-medium">
             Messages : {id?.toLocaleUpperCase()}
           </span>
         </div>
