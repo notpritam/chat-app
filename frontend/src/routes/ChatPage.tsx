@@ -35,13 +35,19 @@ interface SelectedRoom {
 const socket = io("http://localhost:3001");
 
 function ChatPage() {
+  const { token, storeUser, logOut, user, isAnonymous } = useUserStore();
+  const navigate = useNavigate();
+
+  if (user == null) {
+    navigate("/login");
+    return;
+  }
+
   const [message, setMessage] = React.useState("");
   const [messages, setMessages] = React.useState<mesaageType[]>([]);
   let { id } = useParams();
 
   const [emojiOpen, setEmojiOpen] = useState(false);
-  const { user, isAnonymous } = useUserStore();
-  const navigate = useNavigate();
 
   const [currentRoom, setCurrentRoom] = React.useState(id as string);
 
@@ -122,7 +128,7 @@ function ChatPage() {
   }, [messages]);
 
   useEffect(() => {
-    if (currentRoom != "global" && isAnonymous) {
+    if ((currentRoom != "global" && isAnonymous) || token == null) {
       toast({
         title: "Login First",
         description: " You are not allowed , Login First",
@@ -131,6 +137,34 @@ function ChatPage() {
       navigate("/login");
     }
   }, []);
+
+  const verifyUser = async () => {
+    const res = await fetch("http://localhost:3001/api/auth/verify", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    });
+
+    const data = await res.json();
+
+    if (res.status === 200) {
+      console.log(data);
+      storeUser(data.user, token as string);
+    } else {
+      logOut();
+      toast({
+        title: "Error",
+        description: "Invalid token",
+      });
+    }
+  };
+
+  useEffect(() => {
+    verifyUser();
+  }, [token]);
+
   return (
     <div className="flex flex-col h-full w-full justify-between ">
       <div

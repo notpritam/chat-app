@@ -3,8 +3,12 @@ import "./App.css";
 import useUserStore from "./lib/store";
 import { toast } from "./components/ui/use-toast";
 import { Button } from "./components/ui/button";
-import { Link, redirect } from "react-router-dom";
+import { BrowserRouter, Link, Route, Routes, redirect } from "react-router-dom";
 import { faker } from "@faker-js/faker";
+import Layout from "./routes/Layout";
+import Room from "./routes/Room";
+import Login from "./routes/Login";
+import ErrorPage from "./error-page";
 
 function App() {
   const { token, isAnonymous, storeUser, logOut, user, storeAnonymousUser } =
@@ -57,19 +61,15 @@ function App() {
 
   return (
     <>
-      <div>App</div>
-      <p>{user?.username + " " + user?.name}</p>
-
-      <div className="flex flex-col">
-        <Link to={"/login"}>
-          {" "}
-          <Button>Login</Button>
-        </Link>
-        <Link to={"/register"}>
-          <Button>Create an Account</Button>
-        </Link>
-        <Button onClick={handleAnonymously}>Chat Anonymously</Button>
-      </div>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index path="/rooms/:id" element={<Room />} />
+            <Route path="login" element={<Login />} />
+            <Route path="*" element={<ErrorPage />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
     </>
   );
 }

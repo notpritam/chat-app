@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import useUserStore from "@/lib/store";
-import { Link, redirect } from "react-router-dom";
+import { Link, redirect, useNavigate } from "react-router-dom";
 
 function Login() {
   const { storeUser } = useUserStore();
@@ -16,6 +16,8 @@ function Login() {
   });
   const { toast } = useToast();
 
+  const navigate = useNavigate();
+
   const handleLogin = async () => {
     console.log(loginDetails, "sending this detials");
     if (loginDetails.username === "" || loginDetails.password === "") {
@@ -23,7 +25,6 @@ function Login() {
         description: "Please fill in all the fields",
         title: "error",
       });
-      redirect("/home");
       return;
     }
     try {
@@ -38,20 +39,22 @@ function Login() {
         }),
       });
 
+      const data = await res.json();
+
       if (res.status === 401) {
         toast({
-          description: res.body.message,
+          description: data.message as string,
           title: "error",
         });
         return;
       } else if (res.status === 200) {
         const data = await res.json();
         storeUser(data.user, data.token);
-        redirect("/home");
+        navigate("/rooms/global");
       }
 
       //   console.log(res);
-    } catch (err) {
+    } catch (err: any) {
       console.log(err);
       toast({
         description: err.response.data.message,
