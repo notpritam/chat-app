@@ -4,9 +4,10 @@ import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import useUserStore from "@/lib/store";
 import { Link, redirect, useNavigate } from "react-router-dom";
+import { faker } from "@faker-js/faker";
 
 function Login() {
-  const { storeUser } = useUserStore();
+  const { storeUser, storeAnonymousUser } = useUserStore();
   const [loginDetails, setLoginDetails] = useState({
     username: "notpritam",
     password: "123",
@@ -48,7 +49,7 @@ function Login() {
         });
         return;
       } else if (res.status === 200) {
-        const data = await res.json();
+        console.log(data, "coming here");
         storeUser(data.user, data.token);
         navigate("/rooms/global");
       }
@@ -61,6 +62,19 @@ function Login() {
         title: "Error",
       });
     }
+  };
+
+  const handleAnonymously = () => {
+    const user = {
+      _id: faker.string.uuid(),
+      username: faker.internet.userName(),
+      image: faker.image.avatar(),
+      name: `${faker.person.firstName()} ${faker.person.lastName()}`,
+    };
+    console.log(user);
+    storeAnonymousUser(user);
+
+    navigate("/rooms/global");
   };
 
   return (
@@ -84,12 +98,11 @@ function Login() {
             setLoginDetails({ ...loginDetails, password: e.target.value });
           }}
         />
-        <Button type="submit" onClick={handleLogin}>
-          Login
-        </Button>{" "}
+        <Button onClick={handleLogin}>Login</Button>
         <Link to={"/register"} type="submit">
           Crete an Account..
         </Link>
+        <Button onClick={handleAnonymously}>Login Anonymously</Button>
       </div>
     </div>
   );

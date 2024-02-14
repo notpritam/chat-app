@@ -43,7 +43,7 @@ const useUserStore = create<UserState>()(
               image: user.image,
               name: user.name,
             },
-            token: undefined, // Change the type of token from null to string | undefined
+            token: null, // Change the type of token from null to string | undefined
             isAnonymous: true,
           };
         });

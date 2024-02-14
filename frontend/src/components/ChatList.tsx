@@ -19,7 +19,7 @@ interface members {
 
 function ChatList() {
   const [joinedRooms, setJoinedRooms] = useState([]);
-  const { user, token } = useUserStore();
+  const { user, token, isAnonymous } = useUserStore();
 
   const getRoomsList = async () => {
     try {
@@ -46,7 +46,11 @@ function ChatList() {
   };
 
   useEffect(() => {
-    getRoomsList();
+    if (isAnonymous) {
+      return;
+    } else {
+      getRoomsList();
+    }
   }, []);
 
   return (
@@ -64,8 +68,19 @@ function ChatList() {
 
       {joinedRooms.length == 0 && (
         <>
-          <div className="p-4">
-            <span>No Rooms Joined</span>
+          {!isAnonymous && (
+            <div className="p-4">
+              <span>No Rooms Joined</span>
+            </div>
+          )}
+          <div>
+            {isAnonymous && (
+              <div className="p-4">
+                <span>
+                  No Private Rooms or Anonymous User. Create an account first.
+                </span>
+              </div>
+            )}
           </div>
         </>
       )}

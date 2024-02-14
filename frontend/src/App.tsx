@@ -9,6 +9,7 @@ import Layout from "./routes/Layout";
 import Room from "./routes/Room";
 import Login from "./routes/Login";
 import ErrorPage from "./error-page";
+import ChatPage from "./routes/ChatPage";
 
 function App() {
   const { token, isAnonymous, storeUser, logOut, user, storeAnonymousUser } =
@@ -54,7 +55,7 @@ function App() {
   };
 
   useEffect(() => {
-    if (!isAnonymous) {
+    if (!isAnonymous && token) {
       verifyUser();
     }
   }, [isAnonymous]);
@@ -64,7 +65,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Layout />}>
-            <Route index path="/rooms/:id" element={<Room />} />
+            <Route index path="/rooms/:id" element={<ChatPage />} />
             <Route path="login" element={<Login />} />
             <Route path="*" element={<ErrorPage />} />
           </Route>
