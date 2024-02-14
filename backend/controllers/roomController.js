@@ -6,6 +6,7 @@ const roomController = {
       console.log(req.user);
       console.log("getting here");
       const rooms = await roomService.getRooms({ user: req.user });
+      console.log(rooms, "this is rooms");
       res.status(200).json(rooms);
     } catch (err) {
       res.status(500).json({ message: err.message });
@@ -13,7 +14,9 @@ const roomController = {
   },
   joinRoom: async (req, res) => {
     try {
-      const { room, user } = req;
+      const { user } = req;
+
+      const room = req.body.room;
 
       const res = await roomService.joinRoom({
         room,

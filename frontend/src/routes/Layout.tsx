@@ -85,7 +85,7 @@ function Layout() {
           },
           body: JSON.stringify({
             room: {
-              name: roomValue,
+              name: roomValue.trim(),
               image: faker.image.urlLoremFlickr({
                 category: roomValue.replace(/\d/g, ""),
                 width: 200,

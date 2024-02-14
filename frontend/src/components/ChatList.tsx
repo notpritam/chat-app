@@ -5,10 +5,11 @@ import { faker } from "@faker-js/faker";
 import useUserStore from "@/lib/store";
 import { Button } from "./ui/button";
 
-interface Rooms {
+export interface RoomDetails {
   name: string;
   image: string;
   members: members[];
+  // messages: messages[];
 }
 
 interface members {
@@ -17,8 +18,18 @@ interface members {
   image: string;
 }
 
+interface messages {
+  content: string;
+  sender: string;
+  createdAt: string;
+}
+
+interface RoomListResponse {
+  rooms: RoomDetails[];
+}
+
 function ChatList() {
-  const [joinedRooms, setJoinedRooms] = useState([]);
+  const [joinedRooms, setJoinedRooms] = useState<RoomDetails[]>([]);
   const { user, token, isAnonymous } = useUserStore();
 
   const getRoomsList = async () => {
@@ -31,13 +42,13 @@ function ChatList() {
         },
       });
 
-      const data = await res.json();
+      const data: any = await res.json();
 
       if (res.status == 200) {
         console.log(data);
 
         if (data) {
-          setJoinedRooms([]);
+          setJoinedRooms([...data] as any);
         }
       }
     } catch (e) {
@@ -60,11 +71,18 @@ function ChatList() {
         <span className="text-lg font-medium ">All Chats</span>
       </div>
 
-      {joinedRooms?.map((item, index) => (
-        <>
-          <ChatListItem name={`room${index}`} image={faker.image.avatar()} />
-        </>
-      ))}
+      {joinedRooms?.map((item, index) => {
+        console.log(item, "this is from list");
+        return (
+          <>
+            <ChatListItem
+              name={item.name}
+              members={item.members}
+              image={item.image}
+            />
+          </>
+        );
+      })}
 
       {joinedRooms.length == 0 && (
         <>
