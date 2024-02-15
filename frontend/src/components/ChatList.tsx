@@ -55,11 +55,13 @@ function ChatList() {
   };
 
   useEffect(() => {
-    if (isAnonymous) {
-      return;
-    } else {
-      getRoomsList();
-    }
+    const RoomDetails = async () => {
+      if (isAnonymous) {
+        return;
+      } else {
+        await getRoomsList();
+      }
+    };
   }, []);
 
   return (

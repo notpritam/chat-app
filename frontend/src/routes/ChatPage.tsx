@@ -9,6 +9,7 @@ import { Paperclip, Send, Smile } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { io } from "socket.io-client";
+import { socket } from "./Layout";
 
 export interface mesaageType {
   content: string;
@@ -39,9 +40,6 @@ interface initialMessageRes {
   room: string;
   members: User[];
 }
-
-const socket = io("http://localhost:3001");
-
 function ChatPage() {
   const { token, storeUser, logOut, user, isAnonymous, storeGlobalChats } =
     useUserStore();
@@ -55,6 +53,8 @@ function ChatPage() {
   const [message, setMessage] = React.useState("");
   const [messages, setMessages] = React.useState<mesaageType[]>([]);
   let { id } = useParams();
+
+  const [currentRoom, setCurrentRoom] = useState("");
 
   // console.log("this is current room", id);
 
@@ -112,15 +112,23 @@ function ChatPage() {
 
   useEffect(() => {
     console.log("use effect called");
-    socket.on("newMessage", handleNewMessage);
-    setMessages([]);
+
+    if (id == currentRoom) {
+      console.log("still in current room");
+    } else {
+      console.log("changing room to", id);
+      setCurrentRoom(id as string);
+      setMessages([]);
+      joinRoom();
+    }
 
     socket.on("connect", () => {
-      console.log(socket.id);
+      console.log(socket.id, "connecting here");
       joinRoom();
-      // scrollToBottom();
     });
+
     socket.on("userJoined", handleUserJoined);
+    socket.on("newMessage", handleNewMessage);
 
     socket.on("error", (message: string) => {
       console.log(message);
@@ -148,39 +156,12 @@ function ChatPage() {
     });
 
     return () => {
-      socket.off("newMessage", () => {
-        console.log("socket newMessage Disconnect");
-      });
-      socket.off("userJoined", () => {
-        console.log("socket userJoined Disconnect");
-      });
-      socket.off("connect", () => {
-        console.log("socket userJoined Disconnect");
-      });
-      socket.off("error", () => {
-        console.log("socket error Disconnect");
-      });
-      socket.off("intialMessage", () => {
-        console.log("socket intialMessage Disconnect");
-      });
+      socket.off("newMessage", handleNewMessage);
     };
-  }, [id, user]);
-
-  // useEffect(() => {
-  //   setMessages([]);
-  //   socket.on("connect", () => {
-  //     console.log(socket.id);
-  //     joinRoom();
-  //     // scrollToBottom();
-  //   });
-  // }, [id]);
+  }, [id]);
 
   useEffect(() => {
     scrollToBottom();
-
-    return () => {
-      socket.off("connect");
-    };
   }, [message, messages]);
 
   return (

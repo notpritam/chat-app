@@ -36,6 +36,9 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { faker } from "@faker-js/faker";
+import { io } from "socket.io-client";
+
+export const socket = io("http://localhost:3001");
 
 function Layout() {
   const { user, token, logOut, storeUser, isAnonymous } = useUserStore();
@@ -153,9 +156,6 @@ function Layout() {
               className="cursor-pointer"
               onClick={() => {
                 setShowSidebar(!showSidebar);
-                if (location.pathname != "/rooms/global") {
-                  navigate("/rooms/global");
-                }
               }}
             >
               <Globe strokeWidth={0.75} />
