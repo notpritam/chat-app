@@ -25,7 +25,7 @@ function Login() {
     if (loginDetails.username === "" || loginDetails.password === "") {
       toast({
         description: "Please fill in all the fields",
-        title: "error",
+        title: "Error",
       });
       return;
     }
@@ -46,7 +46,7 @@ function Login() {
       if (res.status === 401) {
         toast({
           description: data.message as string,
-          title: "error",
+          title: "Error",
         });
         return;
       } else if (res.status === 200) {

@@ -47,7 +47,7 @@ function Register() {
       });
 
       const data = await res.json();
-      if (res.status === 200) {
+      if (res.status === 201) {
         console.log(data);
         storeUser(data.user, data.token);
         toast({
