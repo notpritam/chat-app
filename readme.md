@@ -56,6 +56,20 @@ This markdown file outlines the features of the chat app developed by Pritam.
 - Username: notpritam
 - Password: 123
 
+# Setup Instructions
+
+.env details for frontend directory
+
+```
+SITE_URL=http://localhost:3001/api/
+```
+.env.local details for backend directory
+```
+MONGO_URI="mongodb+srv://notpritamsharma:SMqDpPT5n1KaESiq@cluster0.9xbrbrd.mongodb.net/?retryWrites=true&w=majority"
+JWT_SECRET="SMqDpPT5n1KaESiq"
+PORT=3001
+```
+
 ```bash
 cd backend
 npm i
