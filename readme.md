@@ -36,16 +36,33 @@ This markdown file outlines the features of the chat app developed by Pritam.
 - Users can view a list of rooms they have joined or created.
 
 ## Video Demo
-[![Chat App Video Demo](https://img.youtube.com/vi/QlszQE3o6Xo/0.jpg)](https://youtu.be/QlszQE3o6Xo)
+[![Chat App Video Demo](images/MainPage.png)](https://youtu.be/QlszQE3o6Xo)
 
 
 ## Screenshots
-[Insert Screenshots Here]
+- Main Page
+    ![Main Page](images/MainPage.png)
+- Chat Page
+    ![Chat Page](images/Rooms.png)
+- Login Page
+     ![Login Page](images/LoginMobile.png)
+- Register Page
+     ![Register Page](images/Register.png)
+- Rooms List
+  ![Rooms List](images/RoomsList.png)
+
 
 ## Login Credentials
 - Username: notpritam
 - Password: 123
 
-## Conclusion
-These features make the chat app developed by Pritam a robust and user-friendly platform for real-time communication.
+```bash
+cd backend
+npm i
+npm start
+cd ../frontend
+npm i
+npm run dev
+```
+
 
