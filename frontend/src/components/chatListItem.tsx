@@ -2,13 +2,23 @@ import { Link, useParams } from "react-router-dom";
 import { RoomDetails } from "./ChatList";
 import { cn } from "@/lib/utils";
 
-function ChatListItem(room: RoomDetails) {
+interface ChatListProps {
+  room: RoomDetails;
+  setSideBar: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+function ChatListItem({ room, setSideBar }: ChatListProps) {
   const { id } = useParams();
   return (
-    <Link to={`http://localhost:5173/rooms/${room.name}`}>
+    <Link
+      onClick={() => {
+        setSideBar(false);
+      }}
+      to={`http://localhost:5173/rooms/${room.name}`}
+    >
       <div
         className={cn(
-          "w-full p-4  flex gap-4 bg-white border-[1px]  bg-opacity-50 backdrop-filter backdrop-blur-3xl  border-gray-200",
+          "w-full p-4  flex gap-4 bg-white border-[1px]  bg-opacity-30 backdrop-filter backdrop-blur-3xl  border-gray-200",
           id === room.name ? "border-r-2 bg-purple-400 bg-opacity-70" : ""
         )}
       >

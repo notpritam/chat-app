@@ -165,7 +165,7 @@ function ChatPage() {
   }, [message, messages]);
 
   return (
-    <div className="flex flex-col h-full w-full justify-end relative   bg-white bg-opacity-10 backdrop-filter  border   rounded-md ">
+    <div className="flex flex-col h-full w-full justify-end relative   bg-black bg-opacity-10 backdrop-filter  border   rounded-md ">
       <div className="flex flex-col z-10  w-full gap-4 overflow-y-auto overflow-hidden  hs  py-4 px-2 ">
         {messages?.map((message, index) => (
           <ChatMessage
@@ -176,7 +176,7 @@ function ChatPage() {
         ))}
         <div ref={messagesEndRef} />
       </div>
-      <div className="flex relative w-full gap-2 items-end p-4 pb-2 bg-white bg-opacity-30 backdrop-filter backdrop-blur-3xl border-t-[1px] border-gray-200 ">
+      <div className="flex relative w-full gap-2 items-end p-4 pb-2 bg-black bg-opacity-50 backdrop-filter backdrop-blur-3xl border-t-[1px] border-gray-200 ">
         <EmojiPicker
           className="fixed -top-8 left-0"
           open={emojiOpen}
@@ -185,16 +185,16 @@ function ChatPage() {
             setMessage((message) => message + e.emoji);
           }}
         />
-        <Smile
+        {/* <Smile
           className="text-white"
           onClick={() => [setEmojiOpen(!emojiOpen)]}
           strokeWidth={0.75}
         />
-        <Paperclip className="text-white" strokeWidth={0.75} />
+        <Paperclip className="text-white" strokeWidth={0.75} /> */}
         <form className="flex w-full gap-2 text-white">
           <Input
             placeholder="Type a message"
-            className="text-gray-100 bg-transparent border-b-[1px] border-gray-100 w-full"
+            className="text-gray-100 bg-transparent border-b-[1px]  w-full border-none focus-visible:ring-0"
             value={message}
             onChange={(e) => {
               setMessage(e.target.value);

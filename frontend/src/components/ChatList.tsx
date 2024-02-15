@@ -28,7 +28,11 @@ interface RoomListResponse {
   rooms: RoomDetails[];
 }
 
-function ChatList() {
+interface ChatListProps {
+  setSidebar: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+function ChatList({ setSidebar }: ChatListProps) {
   const [joinedRooms, setJoinedRooms] = useState<RoomDetails[]>([]);
   const { user, token, isAnonymous } = useUserStore();
 
@@ -67,20 +71,15 @@ function ChatList() {
   }, []);
 
   return (
-    <div className="w-[20%] h-full hs overflow-hidden overflow-y-scroll relative border-r-[1px]  shadow">
-      <div className="flex sticky top-0  items-center gap-2 p-4 z-[2] border-b-[1px]  text-opacity-50 bg-white bg-opacity-50 backdrop-filter backdrop-blur-3xl ">
+    <div className="lg:w-[20%] w-full  h-full hs overflow-hidden overflow-y-scroll relative border-r-[1px]  shadow">
+      <div className="flex sticky top-0  items-center gap-2 p-4 z-[2] border-b-[1px]  text-opacity-40 bg-white bg-opacity-50 backdrop-filter backdrop-blur-3xl ">
         <Pin strokeWidth={0.75} />
         <span className="text-lg font-medium ">Joined Rooms</span>
       </div>
       {/* <ChatListItem name={"global"} members={[]} image={globalImg} /> */}
 
       {joinedRooms?.map((item, index) => (
-        <ChatListItem
-          key={index}
-          name={item.name}
-          members={item.members}
-          image={item.image}
-        />
+        <ChatListItem key={index} room={item} setSideBar={setSidebar} />
       ))}
 
       {joinedRooms.length == 0 && (

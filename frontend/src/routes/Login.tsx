@@ -19,7 +19,8 @@ function Login() {
 
   const navigate = useNavigate();
 
-  const handleLogin = async () => {
+  const handleLogin = async (event: any) => {
+    event.preventDefault();
     console.log(loginDetails, "sending this detials");
     if (loginDetails.username === "" || loginDetails.password === "") {
       toast({
@@ -78,31 +79,46 @@ function Login() {
   };
 
   return (
-    <div className="flex h-screen items-center justify-center gap-4 flex-col">
-      <h1 className="text-3xl">Login</h1>
-      <div className="flex flex-col gap-4 items-start">
-        <Input
-          type="text"
-          name="username"
-          placeholder="Username"
-          value={loginDetails.username}
-          onChange={(e) => {
-            setLoginDetails({ ...loginDetails, username: e.target.value });
-          }}
-        />
-        <Input
-          type="password"
-          name="password"
-          placeholder="Password"
-          onChange={(e) => {
-            setLoginDetails({ ...loginDetails, password: e.target.value });
-          }}
-        />
-        <Button onClick={handleLogin}>Login</Button>
-        <Link to={"/register"} type="submit">
-          Crete an Account..
-        </Link>
-        <Button onClick={handleAnonymously}>Login Anonymously</Button>
+    <div className="flex h-screen z-[10] min-h-screen justify-center items-center text-start w-full gap-4 flex-col">
+      <div className="flex gap-4 flex-col">
+        <h1 className="text-[3rem] font-semibold w-full text-gray-200">
+          Login
+        </h1>
+        <div className="flex flex-col min-w-[300px] gap-4 items-start">
+          <Input
+            type="text"
+            name="username"
+            placeholder="Username"
+            value={loginDetails.username}
+            onChange={(e) => {
+              setLoginDetails({ ...loginDetails, username: e.target.value });
+            }}
+          />
+          <Input
+            type="password"
+            name="password"
+            placeholder="Password"
+            onChange={(e) => {
+              setLoginDetails({ ...loginDetails, password: e.target.value });
+            }}
+          />
+          <Button type="submit" className="w-full" onClick={handleLogin}>
+            Login
+          </Button>
+          <div className="flex gap-8 w-full">
+            <Link to={"/register"} className="w-full">
+              <Button className="w-full bg-transparent text-gray-300">
+                Register
+              </Button>
+            </Link>
+            <Button
+              className="w-full bg-transparent text-gray-300"
+              onClick={handleAnonymously}
+            >
+              Login Anonymously
+            </Button>
+          </div>
+        </div>
       </div>
     </div>
   );

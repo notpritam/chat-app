@@ -16,6 +16,7 @@ import {
   Paperclip,
   Pin,
   Send,
+  Sidebar,
   Smile,
 } from "lucide-react";
 
@@ -40,6 +41,7 @@ import { io } from "socket.io-client";
 import globalIcon from "../assets/img/global.png";
 import addIcon from "../assets/img/plus.png";
 import personalIcon from "../assets/img/personal.png";
+import { cn } from "@/lib/utils";
 
 export const socket = io("http://localhost:3001");
 
@@ -142,33 +144,46 @@ function Layout() {
   }, [token]);
 
   return (
-    <div className="min-h-screen relative h-screen flex overflow-hidden max-h-screen bg-white bg-opacity-10 backdrop-filter backdrop-blur-3xl  border-gray-200  rounded-md shadow-md">
+    <div className="min-h-screen relative h-screen flex overflow-hidden max-h-screen bg-black bg-opacity-10 backdrop-filter backdrop-blur-3xl  border-gray-200  rounded-md shadow-md">
       {/* //SideBar */}
       {/* <div className="absolute z-[-1] blur-3xl bg-cover bg-center bg-[url(https://4kwallpapers.com/images/walls/thumbs_3t/6420.jpg)] top-0 right-0 left-0 bottom-0"></div> */}
 
       <div
-        className="absolute blur-3xl   bg-cover bg-center z-[0] h-full w-full top-0 left-0 right-0 bottom-0"
+        className="absolute blur-3xl    bg-cover bg-center z-[0] h-full w-full top-0 left-0 right-0 bottom-0"
         style={{
           backgroundImage:
             "url(https://i.pinimg.com/originals/c8/79/59/c8795971c58cf637bb181dad8a4b3bfb.jpg)",
         }}
-      ></div>
+      >
+        <div className="h-screen w-screen bg-black opacity-20"></div>
+      </div>
       <Dialog>
-        <div className="md:p-4 md:pb-12 p-2 pt-0 border-r-[1px]  flex flex-col gap-12 bg-white bg-opacity-30 backdrop-filter backdrop-blur-3xl  border-gray-200 ">
+        <div className="md:p-4 md:pb-12 p-4 pt-0 border-r-[1px]  flex flex-col gap-12 bg-white bg-opacity-20 backdrop-filter backdrop-blur-3xl  border-gray-200 ">
           <div className="w-full flex items-center justify-center py-4">
             <img
               src={logoIcon}
               alt="logo"
-              className="h-8 w-8  md:h-12 md:w-12"
+              className="h-10 w-10 md:h-12 md:w-12"
             />
           </div>
 
           <div className="flex flex-col w-full items-center h-full gap-8">
-            <Link to="/rooms/global">
+            <Link
+              to={
+                location.pathname.includes("login") ? "/login" : "/rooms/global"
+              }
+            >
               <div
                 className="cursor-pointer"
                 onClick={() => {
-                  setShowSidebar(!showSidebar);
+                  if (
+                    location.pathname.includes("login") ||
+                    location.pathname.includes("register")
+                  ) {
+                    // navigate("/rooms/global");
+                  } else {
+                    setShowSidebar(!showSidebar);
+                  }
                 }}
               >
                 <img className="h-8 w-8" src={globalIcon} />
@@ -241,17 +256,24 @@ function Layout() {
       </Dialog>
 
       <div className="w-full h-full flex flex-col ">
-        <div className="md:h-[80px] md:flex hidden p-2 md:p-4 shadow border-b-[1px] bg-white bg-opacity-30 backdrop-filter backdrop-blur-3xl border border-gray-200">
-          <span className="md:text-3xl font-medium">
-            Messages : {id?.toLocaleUpperCase()}
+        <div className="md:h-[80px] md:flex  p-4  shadow border-b-[1px] bg-white bg-opacity-20 backdrop-filter backdrop-blur-3xl border border-gray-200">
+          <span className="text-2xl md:text-3xl font-medium">
+            {location.pathname.includes("login") ||
+            location.pathname.includes("register")
+              ? "Login"
+              : ` Chats : ${id?.toLocaleUpperCase()}`}
           </span>
         </div>
 
         <div className="flex h-full overflow-hidden hs  ">
-          {showSidebar ? <ChatList /> : null}
+          {showSidebar ? <ChatList setSidebar={setShowSidebar} /> : null}
 
           {/* Chat Area */}
-          <Outlet />
+          <div
+            className={cn(showSidebar ? "hidden lg:flex" : "flex", "w-full")}
+          >
+            <Outlet />
+          </div>
         </div>
       </div>
     </div>

@@ -48,16 +48,18 @@ function ChatMessage({ type, message }: ChatMessageProps) {
       >
         <div
           className={cn(
-            "px-4 py-2 text-sm rounded-3xl items-start shadow-md border-opacity-10 bg-white text-white flex flex-col  gap-2 w-auto max-w-[60%] bg-opacity-10 backdrop-filter backdrop-blur-3xl border border-gray-200 ",
+            "px-4 py-2 text-sm rounded-3xl items-start shadow-md border-opacity-10 bg-white  text-white flex flex-col  gap-2 w-auto max-w-[60%] bg-opacity-10 backdrop-filter backdrop-blur-3xl border border-gray-50 ",
             type === "sent" ? "rounded-br-none  " : "rounded-bl-none "
           )}
         >
           {type == "sent" ? null : (
-            <span className=" text-gray-200 truncate">{message.user.name}</span>
+            <span className=" text-gray-300 md:text-[1rem] text-[12px] truncate">
+              {message.user.name}
+            </span>
           )}
-          <p className="text-lg">{message.content}</p>
+          <p className="lg:text-lg text-white">{message.content}</p>
         </div>
-        <span className="text-[12px] text-white opacity-55">
+        <span className="text-[10px] lg:text-[12px] text-white opacity-55">
           {formattedTime(message.createdAt)}
         </span>
       </div>
