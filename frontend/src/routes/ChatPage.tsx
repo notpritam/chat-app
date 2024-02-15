@@ -40,9 +40,9 @@ interface initialMessageRes {
   members: User[];
 }
 
-function ChatPage() {
-  const socket = io("http://localhost:3001");
+const socket = io("http://localhost:3001");
 
+function ChatPage() {
   const { token, storeUser, logOut, user, isAnonymous, storeGlobalChats } =
     useUserStore();
   const navigate = useNavigate();
@@ -122,10 +122,6 @@ function ChatPage() {
     });
     socket.on("userJoined", handleUserJoined);
 
-    socket.on("errorMessage", (message: string) => {
-      console.log(message);
-    });
-
     socket.on("error", (message: string) => {
       console.log(message);
       toast({
@@ -149,18 +145,42 @@ function ChatPage() {
       });
 
       setMessages([...formattedMessages]);
-      // setMessages(messages.messages);
-      // storeGlobalChats(messages.messages);
     });
 
     return () => {
-      socket.off("newMessage", handleNewMessage);
-      // socket.disconnect();
+      socket.off("newMessage", () => {
+        console.log("socket newMessage Disconnect");
+      });
+      socket.off("userJoined", () => {
+        console.log("socket userJoined Disconnect");
+      });
+      socket.off("connect", () => {
+        console.log("socket userJoined Disconnect");
+      });
+      socket.off("error", () => {
+        console.log("socket error Disconnect");
+      });
+      socket.off("intialMessage", () => {
+        console.log("socket intialMessage Disconnect");
+      });
     };
-  }, [id]);
+  }, [id, user]);
+
+  // useEffect(() => {
+  //   setMessages([]);
+  //   socket.on("connect", () => {
+  //     console.log(socket.id);
+  //     joinRoom();
+  //     // scrollToBottom();
+  //   });
+  // }, [id]);
 
   useEffect(() => {
     scrollToBottom();
+
+    return () => {
+      socket.off("connect");
+    };
   }, [message, messages]);
 
   return (
@@ -200,6 +220,7 @@ function ChatPage() {
         <form className="flex w-full gap-2 text-white">
           <Input
             placeholder="Type a message"
+            className="text-gray-100 bg-transparent border-b-[1px] border-gray-100 w-full"
             value={message}
             onChange={(e) => {
               setMessage(e.target.value);

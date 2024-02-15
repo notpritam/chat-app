@@ -1,15 +1,17 @@
 import app from "./app.js";
 import { Server } from "socket.io";
 import http from "http";
+import { instrument } from "@socket.io/admin-ui";
 
-import roomController from "./controllers/roomController.js";
 import roomService from "./services/roomService.js";
-import authService from "./services/authService.js";
-import authController from "./controllers/authController.js";
 
 const server = http.createServer(app);
 export const io = new Server(server, {
-  cors: { origin: "http://localhost:5173" },
+  cors: {
+    origin: ["http://localhost:5173", "https://admin.socket.io"],
+    methods: ["GET", "POST"], // Add other allowed methods if needed
+    credentials: true,
+  },
 });
 
 io.on("connection", (socket) => {
@@ -85,3 +87,5 @@ const PORT = process.env.PORT || 3001;
 server.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+instrument(io, { auth: false, mode: "development" });
