@@ -12,10 +12,16 @@ function ChatListItem(room: RoomDetails) {
           id === room.name ? "border-r-2 bg-purple-800 bg-opacity-25" : ""
         )}
       >
-        <img src={room.image} className="h-[48px] w-[48px] rounded-full" />
+        <img
+          src={room.image}
+          className={cn(
+            "h-[48px] w-[48px] rounded-full",
+            room.name == "global" ? "rounded-none" : null
+          )}
+        />
         <div className="flex gap-1 w-full flex-col">
           <div className="flex justify-between">
-            <span className="font-bold">{room.name}</span>
+            <span className="font-bold uppercase">{room.name}</span>
             <span>4:30</span>
           </div>
           <span className="text-sm opacity-55">

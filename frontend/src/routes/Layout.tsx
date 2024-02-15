@@ -37,6 +37,9 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { faker } from "@faker-js/faker";
 import { io } from "socket.io-client";
+import globalIcon from "../assets/img/global.png";
+import addIcon from "../assets/img/plus.png";
+import personalIcon from "../assets/img/personal.png";
 
 export const socket = io("http://localhost:3001");
 
@@ -152,17 +155,19 @@ function Layout() {
           </div>
 
           <div className="flex flex-col w-full items-center h-full gap-8">
-            <div
-              className="cursor-pointer"
-              onClick={() => {
-                setShowSidebar(!showSidebar);
-              }}
-            >
-              <Globe strokeWidth={0.75} />
-            </div>
+            <Link to="/rooms/global">
+              <div
+                className="cursor-pointer"
+                onClick={() => {
+                  setShowSidebar(!showSidebar);
+                }}
+              >
+                <img className="h-8 w-8" src={globalIcon} />
+              </div>
+            </Link>
             <DialogTrigger>
               <div>
-                <CircleFadingPlus strokeWidth={0.75} />
+                <img className="h-8 w-8" src={addIcon} />
               </div>
             </DialogTrigger>
 
@@ -170,7 +175,7 @@ function Layout() {
               className="cursor-pointer"
               onClick={() => setShowSidebar(!showSidebar)}
             >
-              <MessageSquareMore strokeWidth={0.75} />
+              <img className="h-8 w-8" src={personalIcon} />
             </div>
           </div>
 
