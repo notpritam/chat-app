@@ -1,8 +1,5 @@
 # Chat App Features
 
-## Overview
-This markdown file outlines the features of the chat app developed by Pritam.
-
 ## Features
 
 ### Private Chat Room
