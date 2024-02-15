@@ -8,8 +8,8 @@ function ChatListItem(room: RoomDetails) {
     <Link to={`http://localhost:5173/rooms/${room.name}`}>
       <div
         className={cn(
-          "w-full p-4  flex gap-4 bg-white border-[1px]",
-          id === room.name ? "border-r-2 bg-purple-800 bg-opacity-25" : ""
+          "w-full p-4  flex gap-4 bg-white border-[1px]  bg-opacity-50 backdrop-filter backdrop-blur-3xl  border-gray-200",
+          id === room.name ? "border-r-2 bg-purple-400 bg-opacity-70" : ""
         )}
       >
         <img

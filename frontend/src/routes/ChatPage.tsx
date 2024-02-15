@@ -165,14 +165,7 @@ function ChatPage() {
   }, [message, messages]);
 
   return (
-    <div className="flex flex-col h-full w-full justify-end relative   bg-white bg-opacity-10 backdrop-filter backdrop-blur-3xl border border-gray-200  rounded-md shadow-md">
-      <div
-        className="absolute bg-cover bg-center z-[0] h-full w-full top-0 left-0 right-0 bottom-0"
-        style={{
-          backgroundImage:
-            "url(https://4kwallpapers.com/images/walls/thumbs_3t/6420.jpg)",
-        }}
-      ></div>
+    <div className="flex flex-col h-full w-full justify-end relative   bg-white bg-opacity-10 backdrop-filter  border   rounded-md ">
       <div className="flex flex-col z-10  w-full gap-4 overflow-y-auto overflow-hidden  hs  py-4 px-2 ">
         {messages?.map((message, index) => (
           <ChatMessage
@@ -183,7 +176,7 @@ function ChatPage() {
         ))}
         <div ref={messagesEndRef} />
       </div>
-      <div className="flex relative w-full gap-2 items-end p-4 pb-2 backdrop-blur-3xl bg-transparent border-t-[1px]  ">
+      <div className="flex relative w-full gap-2 items-end p-4 pb-2 bg-white bg-opacity-30 backdrop-filter backdrop-blur-3xl border-t-[1px] border-gray-200 ">
         <EmojiPicker
           className="fixed -top-8 left-0"
           open={emojiOpen}

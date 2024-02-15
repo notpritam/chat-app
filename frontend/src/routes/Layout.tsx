@@ -142,10 +142,19 @@ function Layout() {
   }, [token]);
 
   return (
-    <div className="min-h-screen relative h-screen flex overflow-hidden max-h-screen">
+    <div className="min-h-screen relative h-screen flex overflow-hidden max-h-screen bg-white bg-opacity-10 backdrop-filter backdrop-blur-3xl  border-gray-200  rounded-md shadow-md">
       {/* //SideBar */}
+      {/* <div className="absolute z-[-1] blur-3xl bg-cover bg-center bg-[url(https://4kwallpapers.com/images/walls/thumbs_3t/6420.jpg)] top-0 right-0 left-0 bottom-0"></div> */}
+
+      <div
+        className="absolute blur-3xl   bg-cover bg-center z-[0] h-full w-full top-0 left-0 right-0 bottom-0"
+        style={{
+          backgroundImage:
+            "url(https://i.pinimg.com/originals/c8/79/59/c8795971c58cf637bb181dad8a4b3bfb.jpg)",
+        }}
+      ></div>
       <Dialog>
-        <div className="md:p-4 md:pb-12 p-2 pt-0 border-r-[1px]  flex flex-col gap-12">
+        <div className="md:p-4 md:pb-12 p-2 pt-0 border-r-[1px]  flex flex-col gap-12 bg-white bg-opacity-30 backdrop-filter backdrop-blur-3xl  border-gray-200 ">
           <div className="w-full flex items-center justify-center py-4">
             <img
               src={logoIcon}
@@ -231,8 +240,8 @@ function Layout() {
         </DialogContent>
       </Dialog>
 
-      <div className="w-full h-full flex flex-col">
-        <div className="md:h-[80px] md:flex hidden p-2 md:p-4 shadow border-b-[1px]">
+      <div className="w-full h-full flex flex-col ">
+        <div className="md:h-[80px] md:flex hidden p-2 md:p-4 shadow border-b-[1px] bg-white bg-opacity-30 backdrop-filter backdrop-blur-3xl border border-gray-200">
           <span className="md:text-3xl font-medium">
             Messages : {id?.toLocaleUpperCase()}
           </span>
