@@ -17,6 +17,7 @@ function App() {
             <Route path="register" element={<Register />} />
             <Route path="*" element={<ErrorPage />} />
           </Route>
+          <Route path="/rooms/:id" element={<ChatPage />} />
         </Routes>
       </BrowserRouter>
     </>
