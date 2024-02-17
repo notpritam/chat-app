@@ -11,6 +11,16 @@ dotenv.config({ path: ".env.local" });
 const app = express();
 
 app.use(morgan("dev"));
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'none'"],
+        imgSrc: ["'self'", "data:"],
+      },
+    },
+  })
+);
 app.use(express.json());
 app.use(cors());
 
