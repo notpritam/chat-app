@@ -9,6 +9,7 @@ const server = http.createServer(app);
 export const io = new Server(server, {
   cors: {
     origin: [
+      "*",
       "http://localhost:5173",
       "https://chat-app-git-main-notpritam.vercel.app",
       "https://chat-app-backend-0v3j.onrender.com/",
