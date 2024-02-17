@@ -5,6 +5,7 @@ import cors from "cors";
 import authRoutes from "./routes/authRoutes.js";
 import roomRoutes from "./routes/roomRoutes.js";
 import morgan from "morgan";
+import helmet from "helmet";
 
 dotenv.config({ path: ".env.local" });
 
