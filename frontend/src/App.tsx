@@ -1,12 +1,6 @@
-import { useEffect, useState } from "react";
 import "./App.css";
-import useUserStore from "./lib/store";
-import { toast } from "./components/ui/use-toast";
-import { Button } from "./components/ui/button";
 import { BrowserRouter, Link, Route, Routes, redirect } from "react-router-dom";
-import { faker } from "@faker-js/faker";
 import Layout from "./routes/Layout";
-import Room from "./routes/Room";
 import Login from "./routes/Login";
 import ErrorPage from "./error-page";
 import ChatPage from "./routes/ChatPage";

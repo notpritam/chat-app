@@ -43,7 +43,7 @@ import addIcon from "../assets/img/plus.png";
 import personalIcon from "../assets/img/personal.png";
 import { cn } from "@/lib/utils";
 
-export const socket = io("http://localhost:3001");
+export const socket = io("https://chat-app-backend-0v3j.onrender.com/");
 
 function Layout() {
   const { user, token, logOut, storeUser, isAnonymous } = useUserStore();
@@ -60,13 +60,16 @@ function Layout() {
   const navigate = useNavigate();
 
   const verifyUser = async () => {
-    const res = await fetch("http://localhost:3001/api/auth/verify", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
-    });
+    const res = await fetch(
+      "https://chat-app-backend-0v3j.onrender.com/api/auth/verify",
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
 
     const data = await res.json();
 
@@ -85,7 +88,9 @@ function Layout() {
   const createorJoinRooms = async () => {
     try {
       const res = await fetch(
-        `http://localhost:3001/api/rooms/${createRoom ? "create" : "join"}`,
+        `https://chat-app-backend-0v3j.onrender.com/api/rooms/${
+          createRoom ? "create" : "join"
+        }`,
         {
           method: "POST",
           headers: {

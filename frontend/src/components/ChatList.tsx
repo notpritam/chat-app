@@ -38,13 +38,16 @@ function ChatList({ setSidebar }: ChatListProps) {
 
   const getRoomsList = async () => {
     try {
-      const res = await fetch("http://localhost:3001/api/rooms", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      });
+      const res = await fetch(
+        "https://chat-app-backend-0v3j.onrender.com/api/rooms",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
 
       const data: any = await res.json();
 

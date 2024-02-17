@@ -30,16 +30,19 @@ function Login() {
       return;
     }
     try {
-      const res = await fetch("http://localhost:3001/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username: loginDetails.username,
-          password: loginDetails.password,
-        }),
-      });
+      const res = await fetch(
+        "https://chat-app-backend-0v3j.onrender.com/api/auth/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            username: loginDetails.username,
+            password: loginDetails.password,
+          }),
+        }
+      );
 
       const data = await res.json();
 

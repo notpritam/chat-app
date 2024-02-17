@@ -8,7 +8,11 @@ import roomService from "./services/roomService.js";
 const server = http.createServer(app);
 export const io = new Server(server, {
   cors: {
-    origin: ["http://localhost:5173", "https://admin.socket.io"],
+    origin: [
+      // "http://localhost:5173",
+      "https://chat-app-backend-0v3j.onrender.com/",
+      "https://admin.socket.io",
+    ],
     methods: ["GET", "POST"], // Add other allowed methods if needed
     credentials: true,
   },

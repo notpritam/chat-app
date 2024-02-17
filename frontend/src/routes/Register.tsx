@@ -33,18 +33,21 @@ function Register() {
       return;
     }
     try {
-      const res = await fetch("http://localhost:3001/api/auth/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username: loginDetails.username,
-          password: loginDetails.password,
-          name: loginDetails.name,
-          image: faker.image.avatar(),
-        }),
-      });
+      const res = await fetch(
+        "https://chat-app-backend-0v3j.onrender.com/api/auth/register",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            username: loginDetails.username,
+            password: loginDetails.password,
+            name: loginDetails.name,
+            image: faker.image.avatar(),
+          }),
+        }
+      );
 
       const data = await res.json();
       if (res.status === 201) {

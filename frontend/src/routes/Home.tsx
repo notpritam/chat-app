@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 
 import io from "socket.io-client";
 
-const socket = io("http://localhost:3001");
+const socket = io("https://chat-app-backend-0v3j.onrender.com/");
 
 interface mesaageType {
   content: string;
