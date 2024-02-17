@@ -22,7 +22,7 @@ interface ChatListProps {
 
 function ChatList({ setSidebar }: ChatListProps) {
   const [joinedRooms, setJoinedRooms] = useState<RoomDetails[]>([]);
-  const { user, token, isAnonymous } = useUserStore();
+  const { token, isAnonymous } = useUserStore();
 
   const getRoomsList = async () => {
     try {

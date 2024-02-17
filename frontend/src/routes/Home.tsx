@@ -32,12 +32,13 @@ function Home() {
   const [messages, setMessages] = React.useState<mesaageType[]>([]);
   const navigate = useNavigate();
 
-  const { user, isAnonymous } = useUserStore();
+  const { user } = useUserStore();
 
   const [currentRoom, setCurrentRoom] = React.useState("global");
 
   const sendMessage = () => {
     console.log(message);
+    setCurrentRoom(currentRoom);
 
     socket.emit("sendMessage", {
       room: currentRoom,
@@ -92,7 +93,10 @@ function Home() {
       <div className="flex flex-col w-full gap-4 bg-gray-300 h-full py-4 px-2 ">
         {messages.map((message, index) => (
           <>
-            <div className="p-4 bg-blue-800 text-sm text-white rounded-full rounded-bl-none max-w-[60%]">
+            <div
+              key={index}
+              className="p-4 bg-blue-800 text-sm text-white rounded-full rounded-bl-none max-w-[60%]"
+            >
               <p>{message.content}</p>
             </div>
           </>

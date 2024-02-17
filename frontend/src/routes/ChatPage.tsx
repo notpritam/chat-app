@@ -83,6 +83,7 @@ function ChatPage() {
 
   const sendMessage = (event: any) => {
     event?.preventDefault();
+    setEmojiOpen(false);
 
     socket.emit("sendMessage", {
       room: id,
@@ -97,7 +98,9 @@ function ChatPage() {
     setMessage("");
   };
 
-  const handleUserJoined = (details: any) => {};
+  const handleUserJoined = (details: any) => {
+    console.log(details, "user joined");
+  };
 
   // Listending to socket and handiling that
 
