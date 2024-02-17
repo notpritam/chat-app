@@ -15,10 +15,8 @@ function App() {
             <Route index path="/rooms/:id" element={<ChatPage />} />
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />
-            <Route path="*" element={<ErrorPage />} />
-          </Route>
-          <Route path="/rooms" element={<Layout />}>
-            <Route index path="/rooms/:id" element={<ChatPage />} />
+            <Route path="*" element={<ErrorPage />} />{" "}
+            {/* This handles all other routes */}
           </Route>
         </Routes>
       </BrowserRouter>
