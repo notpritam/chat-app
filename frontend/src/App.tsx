@@ -18,6 +18,11 @@ function App() {
             <Route path="*" element={<ErrorPage />} />{" "}
             {/* This handles all other routes */}
           </Route>
+          <Route path="/rooms" element={<Layout />}>
+            <Route index path="/rooms/:id" element={<ChatPage />} />
+
+            {/* This handles all other routes */}
+          </Route>
         </Routes>
       </BrowserRouter>
     </>
