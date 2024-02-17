@@ -17,6 +17,9 @@ function App() {
             <Route path="register" element={<Register />} />
             <Route path="*" element={<ErrorPage />} />
           </Route>
+          <Route path="/rooms" element={<Layout />}>
+            <Route index path="/rooms/:id" element={<ChatPage />} />
+          </Route>
         </Routes>
       </BrowserRouter>
     </>
