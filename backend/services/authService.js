@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import User from "../models/User.js";
 import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
+// import bcrypt from "bcrypt";
 
 const authService = {
   login: async ({ username, password }) => {
@@ -12,7 +12,7 @@ const authService = {
         throw new Error("User not found");
       }
 
-      const isPasswordValid = await bcrypt.compare(password, user.password);
+      const isPasswordValid = password === user.password;
 
       if (!isPasswordValid) {
         throw new Error("Invalid password");
@@ -31,7 +31,8 @@ const authService = {
         return new Error("User already exists");
       }
 
-      const hashedPassword = await bcrypt.hash(password, 10);
+      // const hashedPassword = await bcrypt.hash(password, 10);
+      const hashedPassword = password;
 
       const user = new User({
         username,
