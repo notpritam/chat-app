@@ -9,9 +9,8 @@ const server = http.createServer(app);
 export const io = new Server(server, {
   cors: {
     origin: [
-      "*",
+      "https://chat-app-omega-pearl.vercel.app",
       "http://localhost:5173",
-      "https://chat-app-git-main-notpritam.vercel.app",
       "https://chat-app-backend-0v3j.onrender.com/",
       "https://admin.socket.io",
     ],
