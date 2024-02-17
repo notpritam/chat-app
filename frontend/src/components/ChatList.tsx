@@ -1,10 +1,8 @@
 import { Pin } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import ChatListItem from "./chatListItem";
-import { faker } from "@faker-js/faker";
 import useUserStore from "@/lib/store";
-import { Button } from "./ui/button";
-import globalImg from "../assets/img/global.png";
+
 export interface RoomDetails {
   name: string;
   image: string;
@@ -16,16 +14,6 @@ interface members {
   name: string;
   username: string;
   image: string;
-}
-
-interface messages {
-  content: string;
-  sender: string;
-  createdAt: string;
-}
-
-interface RoomListResponse {
-  rooms: RoomDetails[];
 }
 
 interface ChatListProps {

@@ -1,14 +1,12 @@
-import ChatList from "@/components/ChatList";
 import ChatMessage from "@/components/chatMessage";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
 import useUserStore from "@/lib/store";
 import EmojiPicker from "emoji-picker-react";
-import { Paperclip, Send, Smile } from "lucide-react";
+import { Send } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { io } from "socket.io-client";
 import { socket } from "./Layout";
 
 export interface mesaageType {
@@ -29,20 +27,13 @@ interface User {
   image: string;
 }
 
-interface SelectedRoom {
-  name: string;
-  id: string;
-  image: string;
-}
-
 interface initialMessageRes {
   messages: mesaageType[];
   room: string;
   members: User[];
 }
 function ChatPage() {
-  const { token, storeUser, logOut, user, isAnonymous, storeGlobalChats } =
-    useUserStore();
+  const { user, storeGlobalChats } = useUserStore();
   const navigate = useNavigate();
 
   if (user == null) {

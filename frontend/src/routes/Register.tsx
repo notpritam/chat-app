@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
-import axios from "axios";
 import { useToast } from "@/components/ui/use-toast";
 import useUserStore from "@/lib/store";
 import { faker } from "@faker-js/faker";

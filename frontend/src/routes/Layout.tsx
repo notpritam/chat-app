@@ -2,23 +2,12 @@ import React, { useEffect } from "react";
 import {
   Link,
   Outlet,
-  redirect,
   useLocation,
   useNavigate,
   useParams,
 } from "react-router-dom";
 import useUserStore from "@/lib/store";
-import {
-  CircleFadingPlus,
-  Globe,
-  LogOut,
-  MessageSquareMore,
-  Paperclip,
-  Pin,
-  Send,
-  Sidebar,
-  Smile,
-} from "lucide-react";
+import { LogOut } from "lucide-react";
 
 import {
   Dialog,
