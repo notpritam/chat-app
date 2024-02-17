@@ -10,6 +10,7 @@ export const io = new Server(server, {
   cors: {
     origin: [
       "https://chat-app-omega-pearl.vercel.app",
+      "https://chat-app-notpritam.vercel.app",
       "http://localhost:5173",
       "https://chat-app-backend-0v3j.onrender.com/",
       "https://admin.socket.io",
