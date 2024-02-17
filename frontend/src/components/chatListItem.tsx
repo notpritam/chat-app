@@ -14,7 +14,7 @@ function ChatListItem({ room, setSideBar }: ChatListProps) {
       onClick={() => {
         setSideBar(false);
       }}
-      to={`https://chat-app-backend-0v3j.onrender.com/rooms/${room.name}`}
+      to={`https://chat-app-omega-pearl.vercel.app/rooms/${room.name}`}
     >
       <div
         className={cn(
