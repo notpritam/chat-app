@@ -9,7 +9,7 @@ import Register from "./routes/Register";
 function App() {
   return (
     <>
-      <BrowserRouter>
+      <BrowserRouter basename="/">
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index path="/rooms/:id" element={<ChatPage />} />
@@ -17,7 +17,6 @@ function App() {
             <Route path="register" element={<Register />} />
             <Route path="*" element={<ErrorPage />} />
           </Route>
-          <Route path="/rooms/:id" element={<ChatPage />} />
         </Routes>
       </BrowserRouter>
     </>
