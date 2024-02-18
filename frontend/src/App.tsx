@@ -5,8 +5,27 @@ import Login from "./routes/Login";
 import ErrorPage from "./error-page";
 import ChatPage from "./routes/ChatPage";
 import Register from "./routes/Register";
+import { toast } from "./components/ui/use-toast";
+import { useEffect, useState } from "react";
 
 function App() {
+  const [show, setShow] = useState(true);
+  useEffect(() => {
+    if (show) {
+      setTimeout(() => {
+        toast({
+          description:
+            "Server takes 50s to get started in free plan so you may see some lag during first time. Please be patient.",
+          title: "Server Info",
+        });
+      }, 3000);
+    }
+
+    return () => {
+      setShow(false);
+    };
+  }, []);
+
   return (
     <>
       <BrowserRouter basename="/">
