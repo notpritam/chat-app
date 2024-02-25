@@ -34,7 +34,7 @@ function App() {
             <Route index path="/rooms/:id" element={<ChatPage />} />
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />
-            <Route path="*" element={<ErrorPage />} />{" "}
+            <Route path="*" element={<ErrorPage />} />
             {/* This handles all other routes */}
           </Route>
           <Route path="/rooms" element={<Layout />}>

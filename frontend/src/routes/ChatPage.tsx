@@ -47,8 +47,6 @@ function ChatPage() {
 
   const [currentRoom, setCurrentRoom] = useState("");
 
-  // console.log("this is current room", id);
-
   const [emojiOpen, setEmojiOpen] = useState(false);
 
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
@@ -102,6 +100,11 @@ function ChatPage() {
     console.log(details, "user joined");
   };
 
+  const [userTypin, setUserTyping] = useState(false);
+  const handleUserTypin = (details: any) => {
+    setUserTyping(details.userTying);
+  };
+
   // Listending to socket and handiling that
 
   useEffect(() => {
@@ -120,6 +123,8 @@ function ChatPage() {
       console.log(socket.id, "connecting here");
       joinRoom();
     });
+
+    socket.on("userIsTyping", handleUserTypin);
 
     socket.on("userJoined", handleUserJoined);
     socket.on("newMessage", handleNewMessage);
@@ -160,6 +165,7 @@ function ChatPage() {
 
   return (
     <div className="flex flex-col h-full w-full justify-end relative   bg-black bg-opacity-10 backdrop-filter  border   rounded-md ">
+      {userTypin && <span>User is typing</span>}
       <div className="flex flex-col z-10  w-full gap-4 overflow-y-auto overflow-hidden  hs  py-4 px-2 ">
         {messages?.map((message, index) => (
           <ChatMessage
@@ -179,14 +185,10 @@ function ChatPage() {
             setMessage((message) => message + e.emoji);
           }}
         />
-        {/* <Smile
-          className="text-white"
-          onClick={() => [setEmojiOpen(!emojiOpen)]}
-          strokeWidth={0.75}
-        />
-        <Paperclip className="text-white" strokeWidth={0.75} /> */}
+
         <form className="flex w-full gap-2 text-white">
           <Input
+            onFocus={(e) => {}}
             placeholder="Type a message"
             className="text-gray-100 bg-transparent border-b-[1px]  w-full border-none focus-visible:ring-0"
             value={message}
